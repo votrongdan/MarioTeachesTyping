@@ -67,3 +67,4 @@ bool GameMap::loadTileMat(SDL_Renderer* renderer, string path) {
     return success;
 
 }
+

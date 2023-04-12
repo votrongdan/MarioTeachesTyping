@@ -20,14 +20,14 @@ static SDL_Window* gWindow = NULL;
 static SDL_Renderer* gRenderer = NULL;
 
 // dimension of tile
-#define TILE_SIZE 48;
+#define TILE_SIZE 48
 
 // number of tile on width
-#define MAX_X 1200;
+#define MAX_X 1200
 // number of tile on height
-#define MAX_Y 15;
+#define MAX_Y 15
 
-typedef struct Map {
+struct Map {
 
     // location of tile 
     int x;
