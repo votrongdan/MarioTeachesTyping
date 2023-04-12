@@ -17,7 +17,7 @@ BaseObj::~BaseObj () {
 
 }
 
-bool BaseObj::loadFromFile(SDL_Renderer* renderer, string path ) {
+bool BaseObj::loadMedia(SDL_Renderer* renderer, string path ) {
 
 	//Get rid of preexisting texture
 	free();
@@ -27,23 +27,17 @@ bool BaseObj::loadFromFile(SDL_Renderer* renderer, string path ) {
 
 	//Load image at specified path
 	SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
-	if( loadedSurface == NULL )
-	{
+	if ( loadedSurface == NULL ) {
 		printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
-	}
-	else
-	{
+	} else {
 		//Color key image
 		SDL_SetColorKey( loadedSurface, SDL_TRUE, SDL_MapRGB( loadedSurface->format, 0, 0xFF, 0xFF ) );
 
 		//Create texture from surface pixels
         newTexture = SDL_CreateTextureFromSurface( renderer, loadedSurface );
-		if( newTexture == NULL )
-		{
+		if ( newTexture == NULL ) {
 			printf( "Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
-		}
-		else
-		{
+		} else {
 			//Get image dimensions
 			width = loadedSurface->w;
 			height = loadedSurface->h;
@@ -53,7 +47,6 @@ bool BaseObj::loadFromFile(SDL_Renderer* renderer, string path ) {
 		SDL_FreeSurface( loadedSurface );
 	}
 
-	//Return success
 	obj = newTexture;
 	return obj != NULL;
 
@@ -62,8 +55,7 @@ bool BaseObj::loadFromFile(SDL_Renderer* renderer, string path ) {
 void BaseObj::free () {
 
 	//Free texture if it exists
-	if( obj != NULL )
-	{
+	if ( obj != NULL ) {
 		SDL_DestroyTexture( obj );
 		obj = NULL;
 		width = 0;

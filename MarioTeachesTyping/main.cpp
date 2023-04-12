@@ -14,13 +14,18 @@ bool init() {
 		success = false;
 	} else {
 		//Set texture filtering to linear
-		if ( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) )
-		{
+		if ( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) ) {
+
 			printf( "Warning: Linear texture filtering not enabled!" );
 		}
 
 		//Create window
-		gWindow = SDL_CreateWindow( "Mario teaches typing", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+		gWindow = SDL_CreateWindow( "Mario teaches typing", 
+                                    SDL_WINDOWPOS_UNDEFINED, 
+                                    SDL_WINDOWPOS_UNDEFINED, 
+                                    SCREEN_WIDTH, 
+                                    SCREEN_HEIGHT, 
+                                    SDL_WINDOW_SHOWN );
 		if ( gWindow == NULL ) {
 			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
 			success = false;
@@ -51,7 +56,7 @@ bool loadBackground () {
 
     bool success = true;
 
-    if ( !gBackground.loadFromFile(gRenderer, "media/image/background.png" ) ) {
+    if ( !gBackground.loadMedia(gRenderer, "media/image/background.png" ) ) {
 		printf( "Failed to load background' texture image!\n" );
 		success = false;
 	}
@@ -98,11 +103,9 @@ int main( int argc, char* args[] ) {
     // while app is running
     while (!quit) {
 
-        while( SDL_PollEvent( &e ) != 0 )
-        {
+        while( SDL_PollEvent( &e ) != 0 ) {
             //User requests quit
-            if( e.type == SDL_QUIT )
-            {
+            if ( e.type == SDL_QUIT ) {
                 quit = true;
             }
         }

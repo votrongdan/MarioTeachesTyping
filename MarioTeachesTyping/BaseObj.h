@@ -14,7 +14,7 @@ class BaseObj {
         ~BaseObj();
 
         // load media from file
-        bool loadFromFile(SDL_Renderer* renderer, string path);
+        bool loadMedia(SDL_Renderer* renderer, string path);
 
         // render obj
         void render(int x, int y, SDL_Renderer* renderer);
@@ -22,7 +22,7 @@ class BaseObj {
         // deallocates obj
         void free();
 
-        // get obj dimention
+        // get obj dimension
         int getWidth();
         int getHeight();
 
