@@ -68,3 +68,46 @@ bool GameMap::loadTileMat(SDL_Renderer* renderer, string path) {
 
 }
 
+void GameMap::drawMap(SDL_Renderer* renderer, string path) {
+
+    // initialize area to render tile mat
+    int beginX = 0;
+    int endX = 0;
+
+    int beginY = 0;
+    int endY = 0;
+
+    beginX = (map.x % TILE_SIZE) * -1;
+    endX = beginX + TILE_SIZE + (beginX == 0 ? 0 : TILE_SIZE);
+
+    beginY = (map.y % TILE_SIZE) * -1;
+    endY = beginY + TILE_SIZE + (beginY == 0 ? 0 : TILE_SIZE);
+
+    // initialize location to render tile mat
+    int mapX = 0;
+    int mapY = 0;
+
+    mapX = map.x / TILE_SIZE;
+    mapY = map.y / TILE_SIZE;
+
+    // draw tile mat
+    for (int i = beginY; i < endY; i += TILE_SIZE) {
+
+        mapX = map.x / TILE_SIZE;
+        for (int j = beginX; j < endX; j += TILE_SIZE) {
+
+            int val = map.tiles[mapY][mapX];
+            if (val > 0) {
+
+                tileMat.render(j, i, renderer);
+
+            }
+            mapX++;
+
+        }
+        mapY++;
+
+    }
+
+}
+

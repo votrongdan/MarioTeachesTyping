@@ -27,7 +27,7 @@ class GameMap {
         bool loadTileMat(SDL_renderer* renderer);
 
         // draw tile on map
-        bool drawMap(SDL_renderer* renderer, string path);
+        void drawMap(SDL_renderer* renderer, string path);
 
     private:
 
