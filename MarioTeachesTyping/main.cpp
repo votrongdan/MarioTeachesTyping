@@ -1,7 +1,10 @@
 #include "CommonFunc.h"
 #include "BaseObj.h"
+#include "Road.h"
 
 BaseObj gBackground;
+
+Road road;
 
 bool init() {
 
@@ -52,12 +55,17 @@ bool init() {
 	return success;
 }
 
-bool loadBackground () {
+bool loadMedia () {
 
     bool success = true;
 
     if ( !gBackground.loadMedia(gRenderer, "media/image/background.png" ) ) {
 		printf( "Failed to load background' texture image!\n" );
+		success = false;
+	}
+
+    if ( !road.loadGrass(gRenderer, "media/image/grass.png" ) ) {
+		printf( "Failed to load grass' texture image!\n" );
 		success = false;
 	}
 
@@ -68,6 +76,7 @@ bool loadBackground () {
 void close () {
 
     gBackground.free();
+	road.free();
 
 	//Destroy window	
 	SDL_DestroyRenderer( gRenderer );
@@ -85,14 +94,15 @@ int main( int argc, char* args[] ) {
 
     // start up SDL
     if (!init()) {
-        printf( "Failed to initialize!\n" );
+        printf( "Failed to initialize! %s\n" );
         return -1;
     }
 
-    if (!loadBackground()) {
-        printf( "Failed to load background" );
+    if (!loadMedia()) {
+        printf( "Failed to load media! %s\n" );
         return -1;
     }
+
 
     // main loop flag
     bool quit = false;
@@ -113,7 +123,11 @@ int main( int argc, char* args[] ) {
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear( gRenderer );
 
+		// render background
         gBackground.render(0, 0, gRenderer);
+
+		// render road
+		road.renderRoad(gRenderer);
 
         // update screen
         SDL_RenderPresent( gRenderer );
