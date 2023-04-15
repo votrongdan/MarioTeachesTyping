@@ -17,6 +17,12 @@ BaseObj::~BaseObj () {
 
 }
 
+// SDL_Texture* getObj() {
+
+// 	return this -> obj;
+
+// }
+
 bool BaseObj::loadMedia(SDL_Renderer* renderer, string path ) {
 
 	//Get rid of preexisting texture
@@ -31,7 +37,7 @@ bool BaseObj::loadMedia(SDL_Renderer* renderer, string path ) {
 		printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
 	} else {
 		//Color key image
-		SDL_SetColorKey( loadedSurface, SDL_TRUE, SDL_MapRGB( loadedSurface->format, 0, 0xFF, 0xFF ) );
+		SDL_SetColorKey( loadedSurface, SDL_TRUE, SDL_MapRGB( loadedSurface->format, 0xA3, 0x49, 0xA4 ) );
 
 		//Create texture from surface pixels
         newTexture = SDL_CreateTextureFromSurface( renderer, loadedSurface );
@@ -64,11 +70,19 @@ void BaseObj::free () {
 
 }
 
-void BaseObj::render ( int x, int y, SDL_Renderer* renderer) {
+void BaseObj::render ( int x, int y, SDL_Renderer* renderer, SDL_Rect* clip) {
 
 	//Set rendering space and render to screen
 	SDL_Rect rect = { x, y, width, height };
-	SDL_RenderCopy( renderer, obj, NULL, &rect );
+
+	if (clip != NULL) {
+
+		rect.w = clip -> w;
+		rect.h = clip -> h;
+
+	}
+
+	SDL_RenderCopy( renderer, obj, clip, &rect );
 }
 
 

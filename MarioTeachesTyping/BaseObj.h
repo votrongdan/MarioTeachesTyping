@@ -13,11 +13,16 @@ class BaseObj {
         // deallocates memory
         ~BaseObj();
 
+        // get obj
+        SDL_Texture* getObj() {
+            return this -> obj;
+        }
+
         // load media from file
         bool loadMedia(SDL_Renderer* renderer, string path);
 
         // render obj
-        void render(int x, int y, SDL_Renderer* renderer);
+        void render(int x, int y, SDL_Renderer* renderer, SDL_Rect* clip = NULL);
 
         // deallocates obj
         void free();

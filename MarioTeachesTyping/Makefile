@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = main.cpp CommonFunc.cpp BaseObj.cpp Road.cpp
+OBJS = main.cpp CommonFunc.cpp BaseObj.cpp Road.cpp Mario.cpp
 
 #CC specifies which compiler we're using
 CC = g++

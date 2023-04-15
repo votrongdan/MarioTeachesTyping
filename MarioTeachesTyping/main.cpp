@@ -1,10 +1,13 @@
 #include "CommonFunc.h"
 #include "BaseObj.h"
 #include "Road.h"
+#include "Mario.h"
 
 BaseObj gBackground;
 
 Road road;
+
+Mario gMario;
 
 bool init() {
 
@@ -69,6 +72,11 @@ bool loadMedia () {
 		success = false;
 	}
 
+    if ( !gMario.loadMario(gRenderer, "media/image/mario.png" ) ) {
+		printf( "Failed to load Mario' texture image!\n" );
+		success = false;
+	}
+
     return success;
 
 }
@@ -103,6 +111,10 @@ int main( int argc, char* args[] ) {
         return -1;
     }
 
+	int xPos = gMario.getXPos();
+	int yPos = gMario.getYPos();
+
+	int frame = 0;
 
     // main loop flag
     bool quit = false;
@@ -117,10 +129,12 @@ int main( int argc, char* args[] ) {
             //User requests quit
             if ( e.type == SDL_QUIT ) {
                 quit = true;
-            }
-        }
+            } else if (e.type == SDL_KEYDOWN) {
+				gMario.setStatus(1);
+			}
+        } 
 
-        SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+        //SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear( gRenderer );
 
 		// render background
@@ -128,6 +142,23 @@ int main( int argc, char* args[] ) {
 
 		// render road
 		road.renderRoad(gRenderer);
+
+		if (gMario.getStatus() == 0) {
+
+			gMario.stand(gRenderer, xPos, yPos);
+
+		} else if (gMario.getStatus() == 1 && frame < 6) {
+
+			gMario.run(gRenderer, xPos, yPos, frame);
+			frame++;
+			xPos += 40;
+
+		} else if (gMario.getStatus() == 1 && frame == 6) {
+
+			gMario.setStatus(0);
+			frame = 0;
+
+		}
 
         // update screen
         SDL_RenderPresent( gRenderer );
