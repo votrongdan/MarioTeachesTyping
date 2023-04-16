@@ -150,6 +150,17 @@ int Mario::getStatus() {
 
 }
 
+void Mario::jump(SDL_Renderer* renderer, double x, double y, int f) {
+
+    SDL_Rect currentClip;
+
+    currentClip = jumpClips[f];
+
+    BaseObj::render(x, y - currentClip.h, renderer, &currentClip);
+
+
+}
+
 void Mario::run(SDL_Renderer* renderer, double x, double y, int f) {
 
     SDL_Rect currentClip;

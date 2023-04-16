@@ -130,7 +130,17 @@ int main( int argc, char* args[] ) {
             if ( e.type == SDL_QUIT ) {
                 quit = true;
             } else if (e.type == SDL_KEYDOWN) {
-				gMario.setStatus(1);
+				
+				switch (e.key.keysym.sym) {
+
+					case SDLK_UP:
+						gMario.setStatus(1);
+						break;
+					case SDLK_DOWN:
+						gMario.setStatus(2);
+						break;
+				}
+
 			}
         } 
 
@@ -154,6 +164,16 @@ int main( int argc, char* args[] ) {
 			xPos += 40;
 
 		} else if (gMario.getStatus() == 1 && frame == 6) {
+
+			gMario.setStatus(0);
+			frame = 0;
+
+		} else if (gMario.getStatus() == 2 && frame < 11) {
+
+			frame++;
+			xPos += 40;
+
+		} else if (gMario.getStatus() == 2 && frame == 11) {
 
 			gMario.setStatus(0);
 			frame = 0;

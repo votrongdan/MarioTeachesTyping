@@ -21,6 +21,8 @@ class Mario : public BaseObj {
         
         void stand(SDL_Renderer* renderer, double x, double y, int f = 0);
 
+        void jump(SDL_Renderer* renderer, double x, double y, int f);
+
         int getXPos();
 
         int getYPos();
