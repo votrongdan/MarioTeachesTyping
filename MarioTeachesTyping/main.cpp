@@ -111,8 +111,8 @@ int main( int argc, char* args[] ) {
         return -1;
     }
 
-	int xPos = gMario.getXPos();
-	int yPos = gMario.getYPos();
+	double xPos = gMario.getXPos();
+	double yPos = gMario.getYPos();
 
 	int frame = 0;
 

@@ -17,9 +17,9 @@ class Mario : public BaseObj {
         // render Mario
         void renderMario(SDL_Renderer* renderer);
 
-        void run(SDL_Renderer* renderer, int x, int y, int f);
+        void run(SDL_Renderer* renderer, double x, double y, int f);
         
-        void stand(SDL_Renderer* renderer, int x, int y, int f = 0);
+        void stand(SDL_Renderer* renderer, double x, double y, int f = 0);
 
         int getXPos();
 
@@ -33,8 +33,8 @@ class Mario : public BaseObj {
         SDL_Texture* mario = BaseObj::getObj();
 
         // initialize position of Mario
-        int xPos;
-        int yPos;
+        double xPos;
+        double yPos;
 
         // initialize distance
         int xDistance;

@@ -77,60 +77,60 @@ bool Mario::loadMario(SDL_Renderer* renderer, string path) {
         runClips[5].w = 80;
         runClips[5].h = 94;
 
-        jumpClips[0].x;
-        jumpClips[0].y;
-        jumpClips[0].w;
-        jumpClips[0].h;
+        jumpClips[0].x = 4;
+        jumpClips[0].y = 315;
+        jumpClips[0].w = 73;
+        jumpClips[0].h = 130;
 
-        jumpClips[1].x;
-        jumpClips[1].y;
-        jumpClips[1].w;
-        jumpClips[1].h;
+        jumpClips[1].x = 82;
+        jumpClips[1].y = 315;
+        jumpClips[1].w = 93;
+        jumpClips[1].h = 130;
 
-        jumpClips[2].x;
-        jumpClips[2].y;
-        jumpClips[2].w;
-        jumpClips[2].h;
+        jumpClips[2].x = 181;
+        jumpClips[2].y = 315;
+        jumpClips[2].w = 93;
+        jumpClips[2].h = 130;
 
-        jumpClips[3].x;
-        jumpClips[3].y;
-        jumpClips[3].w;
-        jumpClips[3].h;
+        jumpClips[3].x = 279;
+        jumpClips[3].y = 315;
+        jumpClips[3].w = 93;
+        jumpClips[3].h = 130;
 
-        jumpClips[4].x;
-        jumpClips[4].y;
-        jumpClips[4].w;
-        jumpClips[4].h;
+        jumpClips[4].x = 378;
+        jumpClips[4].y = 315;
+        jumpClips[4].w = 93;
+        jumpClips[4].h = 130;
 
-        jumpClips[5].x;
-        jumpClips[5].y;
-        jumpClips[5].w;
-        jumpClips[5].h;
+        jumpClips[5].x = 476;
+        jumpClips[5].y = 315;
+        jumpClips[5].w = 91;
+        jumpClips[5].h = 130;
 
-        jumpClips[6].x;
-        jumpClips[6].y;
-        jumpClips[6].w;
-        jumpClips[6].h;
+        jumpClips[6].x = 572;
+        jumpClips[6].y = 315;
+        jumpClips[6].w = 88;
+        jumpClips[6].h = 130;
 
-        jumpClips[7].x;
-        jumpClips[7].y;
-        jumpClips[7].w;
-        jumpClips[7].h;
+        jumpClips[7].x = 665;
+        jumpClips[7].y = 315;
+        jumpClips[7].w = 81;
+        jumpClips[7].h = 130;
 
-        jumpClips[8].x;
-        jumpClips[8].y;
-        jumpClips[8].w;
-        jumpClips[8].h;
+        jumpClips[8].x = 751;
+        jumpClips[8].y = 315;
+        jumpClips[8].w = 83;
+        jumpClips[8].h = 130;
 
-        jumpClips[9].x;
-        jumpClips[9].y;
-        jumpClips[9].w;
-        jumpClips[9].h;
+        jumpClips[9].x = 839;
+        jumpClips[9].y = 315;
+        jumpClips[9].w = 99;
+        jumpClips[9].h = 130;
 
-        jumpClips[10].x;
-        jumpClips[10].y;
-        jumpClips[10].w;
-        jumpClips[10].h;
+        jumpClips[10].x = 943;
+        jumpClips[10].y = 315;
+        jumpClips[10].w = 83;
+        jumpClips[10].h = 130;
 
     }
 
@@ -150,7 +150,7 @@ int Mario::getStatus() {
 
 }
 
-void Mario::run(SDL_Renderer* renderer, int x, int y, int f) {
+void Mario::run(SDL_Renderer* renderer, double x, double y, int f) {
 
     SDL_Rect currentClip;
 
@@ -161,7 +161,7 @@ void Mario::run(SDL_Renderer* renderer, int x, int y, int f) {
 
 }
 
-void Mario::stand(SDL_Renderer* renderer, int x, int y, int f) {
+void Mario::stand(SDL_Renderer* renderer, double x, double y, int f) {
 
     SDL_Rect currentClip;
 
