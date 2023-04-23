@@ -2,12 +2,19 @@
 #include "BaseObj.h"
 #include "Road.h"
 #include "Mario.h"
+#include "Character.h"
 
 BaseObj gBackground;
 
 Road road;
 
 Mario gMario;
+
+Character c;
+
+Turtle gTurtle;
+
+Tile gTile;
 
 bool init() {
 
@@ -77,6 +84,16 @@ bool loadMedia () {
 		success = false;
 	}
 
+	if (!gTurtle.loadMedia(gRenderer, "media/image/turtle.png" ) ) {
+		printf( "Failed to load turtle' texture image!\n" );
+		success = false;
+	}
+
+	if (!gTile.loadMedia(gRenderer, "media/image/tile.png" ) ) {
+		printf( "Failed to load tile' texture image!\n" );
+		success = false;
+	}
+
     return success;
 
 }
@@ -116,6 +133,8 @@ int main( int argc, char* args[] ) {
 
 	int frame = 0;
 
+	c.createChar();
+
     // main loop flag
     bool quit = false;
 
@@ -141,6 +160,7 @@ int main( int argc, char* args[] ) {
 						break;
 				}
 
+
 			}
         } 
 
@@ -152,6 +172,8 @@ int main( int argc, char* args[] ) {
 
 		// render road
 		road.renderRoad(gRenderer);
+
+		gTurtle.render(0, 0, gRenderer);
 
 		if (gMario.getStatus() == 0) {
 
@@ -171,7 +193,7 @@ int main( int argc, char* args[] ) {
 		} else if (gMario.getStatus() == 2 && frame < 11) {
 
 			frame++;
-			xPos += 40;
+			xPos += 20;
 
 		} else if (gMario.getStatus() == 2 && frame == 11) {
 
