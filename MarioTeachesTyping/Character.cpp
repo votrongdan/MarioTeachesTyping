@@ -4,6 +4,7 @@ Character::Character() {
 
     c = '\0';
     isExist = false;
+    order = -1;
 
 }
 
@@ -19,10 +20,14 @@ char Character::getChar() {
 
 }
 
+void Character::renderCharacter(int order) {
+
+
+
+}
+
 Turtle::Turtle() {
 
-    xPos = 0;
-    yPos = 0;
 
 }
 
@@ -33,9 +38,6 @@ Turtle::~Turtle() {
 }
 
 Tile::Tile() {
-
-    xPos = 0;
-    yPos = 0;
 
 }
 

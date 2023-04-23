@@ -4,7 +4,7 @@
 #include "CommonFunc.h"
 #include "BaseObj.h"
 
-class Character : public BaseObj {
+class Character {
 
     public:
 
@@ -14,43 +14,47 @@ class Character : public BaseObj {
 
         char getChar();
 
-        void renderCharacter();
+        void renderCharacter(int order);
 
     private:
 
         char c;
         
+        int order;
+
         bool isExist;
 
 
 };
 
-class Turtle : public Character {
+class Turtle : public BaseObj {
 
     public:
 
         Turtle();
         ~Turtle();
+
+        void renderTurtle(SDL_Renderer* renderer, int x);
     
     private:
 
-        int xPos;
-        int yPos;
+        const int yPos = 384;
 
 
 };
 
-class Tile : public Character {
+class Tile : public BaseObj {
 
     public:
 
         Tile();
         ~Tile();
+
+        void renderTile(SDL_Renderer* renderer, int x);
     
     private:
 
-        int xPos;
-        int yPos;
+        const int yPos = 184;
 
 
 };
