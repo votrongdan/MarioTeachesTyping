@@ -152,6 +152,8 @@ int main( int argc, char* args[] ) {
         return -1;
     }
 
+	int xRoad = 0;
+
 	// initialize flag to stop
 	int stop = 240;
 
@@ -175,7 +177,6 @@ int main( int argc, char* args[] ) {
 			return -1;
 		}
 	}
-
 
 	Character mainChar = arrChar[0];;
 
@@ -206,7 +207,7 @@ int main( int argc, char* args[] ) {
 
 			arrChar.erase(arrChar.begin());
 			stop += 240;
-			
+
 		}
 
 		if (arrChar.size() < 5) {
@@ -235,7 +236,7 @@ int main( int argc, char* args[] ) {
         gBackground.render(0, 0, gRenderer);
 
 		// render road
-		road.renderRoad(gRenderer);
+		road.renderRoad(gRenderer, xRoad);
 
 		for (int i = 0; i < 5; i++) {
 			int xThreat = stop + i * 240;

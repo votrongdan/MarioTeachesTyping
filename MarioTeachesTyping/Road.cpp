@@ -22,11 +22,9 @@ bool Road::loadGrass (SDL_Renderer* renderer, string path) {
 
 }
 
-void Road::renderRoad(SDL_Renderer* renderer) {
+void Road::renderRoad(SDL_Renderer* renderer, int xRoad) {
 
-    for (int i = 0; i < 12000; i += 48) {
-        gGrass.render(i, SKY_LINE, renderer);
-    }
+    gGrass.render(xRoad, SKY_LINE, renderer);
 
 }
 

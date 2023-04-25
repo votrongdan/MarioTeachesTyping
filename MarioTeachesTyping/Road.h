@@ -25,7 +25,7 @@ class Road {
         bool loadGrass (SDL_Renderer* renderer, string path);
 
         // render road
-        void renderRoad (SDL_Renderer* renderer);
+        void renderRoad (SDL_Renderer* renderer, int xRoad);
 
         // free texture if it exist
         void free();
