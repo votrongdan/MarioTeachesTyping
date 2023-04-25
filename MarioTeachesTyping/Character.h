@@ -22,9 +22,6 @@ class Character : public BaseObj {
         // get Threat
         int getThreat();
 
-        // render a character
-        void renderCharacter(SDL_Renderer* renderer, string text);
-
     private:
 
         // initialize character
@@ -32,16 +29,6 @@ class Character : public BaseObj {
         
         // initialize threat
         int threat;
-
-        // initialize position of character
-        int xPos;
-        int yPos;
-
-        // // initialize turtle
-        // Turtle gTurtle;
-
-        // // initialize tile
-        // Tile gTile;
 
 };
 

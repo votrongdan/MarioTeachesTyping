@@ -233,8 +233,6 @@ int main( int argc, char* args[] ) {
 		// render road
 		road.renderRoad(gRenderer);
 
-
-
 		for (int i = 0; i < 5; i++) {
 			int xThreat = stop + i * 240;
 			if (arrChar[i].getThreat() == 0) {
@@ -248,20 +246,6 @@ int main( int argc, char* args[] ) {
 
 		mainChar.render(576, 570, gRenderer);
 
-		// gMario.run(gRenderer, xPos, yPos, frame % 6);
-		// xPos += 1;
-
-		// if (xPos > 240) {
-		// 	if (check1 == false) {
-		// 		xPos = 240;
-		// 	}
-		// }
-
-		// frame++;
-		
-		// if (gMario.getStatus() == 1 && frame == 36) {
-		// 	frame == 0;
-		// }
 
         // update screen
         SDL_RenderPresent( gRenderer );

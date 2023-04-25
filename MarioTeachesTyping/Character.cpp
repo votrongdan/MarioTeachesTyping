@@ -6,9 +6,6 @@ Character::Character() {
 
     threat = -1;
 
-    xPos = 0;
-    yPos = 0;
-
 }
 
 void Character::createChar() {
@@ -32,13 +29,6 @@ void Character::createThreat() {
 int Character::getThreat() {
 
     return threat;
-
-}
-
-
-
-void Character::renderCharacter(SDL_Renderer* renderer, string text) {
-
 
 }
 
