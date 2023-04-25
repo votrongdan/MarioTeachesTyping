@@ -134,6 +134,7 @@ void close () {
 	//Quit SDL subsystems
 	IMG_Quit();
 	SDL_Quit();
+	TTF_Quit();
 
 }
 
@@ -171,7 +172,7 @@ int main( int argc, char* args[] ) {
 
 	}
 
-	Character mainChar = arrChar[0];;
+	Character mainChar = arrChar[0];
 
     // main loop flag
     bool quit = false;
@@ -190,6 +191,9 @@ int main( int argc, char* args[] ) {
 
 				if (e.key.keysym.sym == mainChar.getChar()) {
 					mainChar.setDead(true);
+
+
+
 				}
 
 			}
@@ -247,7 +251,21 @@ int main( int argc, char* args[] ) {
 		}
 
 		// render main character
-		mainChar.render(576, 570, gRenderer);
+		mainChar.render(562, 562, gRenderer);
+
+
+		if (gMario.getXPos() < stop - 70) {
+			gMario.run(gRenderer);
+		} 
+		else if (gMario.getXPos() == stop - 70 && mainChar.getThreat() == 1) {
+			gMario.jump(gRenderer);
+		}
+		else if (gMario.getXPos() == stop - 70) {
+			gMario.stand(gRenderer);
+		}
+
+		
+
 
 
         // update screen

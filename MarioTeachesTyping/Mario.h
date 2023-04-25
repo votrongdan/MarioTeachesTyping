@@ -19,13 +19,13 @@ class Mario : public BaseObj {
         void renderMario(SDL_Renderer* renderer);
 
         // render Mario running
-        void run(SDL_Renderer* renderer, double x, double y, int f);
+        void run(SDL_Renderer* renderer);
         
         // render Mario standing
-        void stand(SDL_Renderer* renderer, double x, double y, int f = 0);
+        void stand(SDL_Renderer* renderer);
 
         // render Mario jumping
-        void jump(SDL_Renderer* renderer, double x, double y, int f);
+        void jump(SDL_Renderer* renderer);
 
         // get x condinate of Mario
         int getXPos();
@@ -46,14 +46,6 @@ class Mario : public BaseObj {
         // initialize position of Mario
         double xPos;
         double yPos;
-
-        // initialize distance
-        int xDistance;
-        int yDistance;
-
-        // initialize size of Mario frame
-        int widthMario;
-        int heightMario;
 
         // initialize clips of status
         SDL_Rect runClips[6];
