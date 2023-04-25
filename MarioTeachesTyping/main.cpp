@@ -162,20 +162,13 @@ int main( int argc, char* args[] ) {
 
 	vector<Character> arrChar;
 
+	// create five character
 	for (int i = 0; i < 5; i++) {
 		c.createChar();
 		c.createThreat();
 
 		arrChar.push_back(c);
 
-	}
-
-	for (int i = 0; i < 5; i++) {
-		string s(1, arrChar[i].getChar());
-		if (!arrChar[i].loadFromRenderedText(gRenderer, gFont, s, textColor)) {
-			printf( "Unable to render character texture!\n" );
-			return -1;
-		}
 	}
 
 	Character mainChar = arrChar[0];;
@@ -203,6 +196,7 @@ int main( int argc, char* args[] ) {
 
         } 
 
+		// check character 
 		if (mainChar.isDead() == true) {
 
 			arrChar.erase(arrChar.begin());
@@ -210,6 +204,7 @@ int main( int argc, char* args[] ) {
 
 		}
 
+		// add character
 		if (arrChar.size() < 5) {
 
 			c.createChar();
@@ -222,6 +217,7 @@ int main( int argc, char* args[] ) {
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear( gRenderer );
 
+		// load character texture
 		for (int i = 0; i < 5; i++) {
 			string s(1, arrChar[i].getChar());
 			if (!arrChar[i].loadFromRenderedText(gRenderer, gFont, s, textColor)) {
@@ -238,6 +234,7 @@ int main( int argc, char* args[] ) {
 		// render road
 		road.renderRoad(gRenderer, xRoad);
 
+		// render threat and character
 		for (int i = 0; i < 5; i++) {
 			int xThreat = stop + i * 240;
 			if (arrChar[i].getThreat() == 0) {
@@ -249,6 +246,7 @@ int main( int argc, char* args[] ) {
 			}
 		}
 
+		// render main character
 		mainChar.render(576, 570, gRenderer);
 
 
