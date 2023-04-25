@@ -3,8 +3,10 @@
 Character::Character() {
 
     c = '\0';
-    isExist = false;
-    order = -1;
+
+    threat = -1;
+
+    xPos = 0;
 
 }
 
@@ -20,9 +22,29 @@ char Character::getChar() {
 
 }
 
-void Character::renderCharacter(int order) {
+void Character::createThreat() {
+
+    threat = rand() % 2;
+
+}
+
+int Character::getThreat() {
+
+    return threat;
+
+}
 
 
+
+void Character::renderCharacter(SDL_Renderer* renderer) {
+
+    // if (threat == 0) {
+    //     gTurtle.renderTurtle(renderer, xPos);
+    // } else {
+    //     gTile.renderTile(renderer, xPos);
+    // }
+
+    
 
 }
 
@@ -37,6 +59,12 @@ Turtle::~Turtle() {
 
 }
 
+void Turtle::renderTurtle(SDL_Renderer* renderer, int x) {
+
+    BaseObj::render(x, yPos, renderer);
+
+}
+
 Tile::Tile() {
 
 }
@@ -44,6 +72,12 @@ Tile::Tile() {
 Tile::~Tile() {
 
     BaseObj::free();
+
+}
+
+void Tile::renderTile(SDL_Renderer* renderer, int x) {
+
+    BaseObj::render(x, yPos, renderer);
 
 }
 

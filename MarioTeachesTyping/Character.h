@@ -10,20 +10,37 @@ class Character {
 
         Character();
 
+        // random a character
         void createChar();
 
+        // get character
         char getChar();
+        
+        // random a threat
+        void createThreat();
 
-        void renderCharacter(int order);
+        // get Threat
+        int getThreat();
+
+        // render a character
+        void renderCharacter(SDL_Renderer* renderer);
 
     private:
 
+        // initialize character
         char c;
         
-        int order;
+        // initialize threat
+        int threat;
 
-        bool isExist;
+        // initialize x condinate of character
+        int xPos;
 
+        // // initialize turtle
+        // Turtle gTurtle;
+
+        // // initialize tile
+        // Tile gTile;
 
 };
 
@@ -40,7 +57,6 @@ class Turtle : public BaseObj {
 
         const int yPos = 384;
 
-
 };
 
 class Tile : public BaseObj {
@@ -55,7 +71,6 @@ class Tile : public BaseObj {
     private:
 
         const int yPos = 184;
-
 
 };
 

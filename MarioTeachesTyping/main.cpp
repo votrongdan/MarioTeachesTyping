@@ -10,8 +10,6 @@ Road road;
 
 Mario gMario;
 
-Character c;
-
 Turtle gTurtle;
 
 Tile gTile;
@@ -102,6 +100,9 @@ void close () {
 
     gBackground.free();
 	road.free();
+	gMario.free();
+	gTurtle.free();
+	gTile.free();
 
 	//Destroy window	
 	SDL_DestroyRenderer( gRenderer );
@@ -114,6 +115,8 @@ void close () {
 	SDL_Quit();
 
 }
+
+
 
 int main( int argc, char* args[] ) {
 
@@ -128,12 +131,19 @@ int main( int argc, char* args[] ) {
         return -1;
     }
 
-	double xPos = gMario.getXPos();
-	double yPos = gMario.getYPos();
-
 	int frame = 0;
 
-	c.createChar();
+	// initialize flag to stop
+	int stop = 240;
+
+	vector<Character> arrChar;
+
+	for (int i = 0; i < 5; i++) {
+		Character c;
+		c.createChar();
+		c.createThreat();
+		arrChar.push_back(c);
+	}
 
     // main loop flag
     bool quit = false;
@@ -150,15 +160,17 @@ int main( int argc, char* args[] ) {
                 quit = true;
             } else if (e.type == SDL_KEYDOWN) {
 				
-				switch (e.key.keysym.sym) {
+				// switch (e.key.keysym.sym) {
 
-					case SDLK_UP:
-						gMario.setStatus(1);
-						break;
-					case SDLK_DOWN:
-						gMario.setStatus(2);
-						break;
-				}
+				// 	case SDLK_UP:
+				// 		gMario.setStatus(1);
+				// 		frame = 0;
+				// 		check1 = true;
+				// 		break;
+				// 	case SDLK_DOWN:
+				// 		gMario.setStatus(2);
+				// 		break;
+				// }
 
 
 			}
@@ -173,34 +185,28 @@ int main( int argc, char* args[] ) {
 		// render road
 		road.renderRoad(gRenderer);
 
-		gTurtle.render(0, 0, gRenderer);
-
-		if (gMario.getStatus() == 0) {
-
-			gMario.stand(gRenderer, xPos, yPos);
-
-		} else if (gMario.getStatus() == 1 && frame < 6) {
-
-			gMario.run(gRenderer, xPos, yPos, frame);
-			frame++;
-			xPos += 40;
-
-		} else if (gMario.getStatus() == 1 && frame == 6) {
-
-			gMario.setStatus(0);
-			frame = 0;
-
-		} else if (gMario.getStatus() == 2 && frame < 11) {
-
-			frame++;
-			xPos += 20;
-
-		} else if (gMario.getStatus() == 2 && frame == 11) {
-
-			gMario.setStatus(0);
-			frame = 0;
-
+		for (int i = 0; i < 5; i++) {
+			if (arrChar[i].getThreat() == 0) {
+				gTurtle.renderTurtle(gRenderer, stop + i * 240);
+			} else {
+				gTile.renderTile(gRenderer, stop + i * 240);
+			}
 		}
+
+		// gMario.run(gRenderer, xPos, yPos, frame % 6);
+		// xPos += 1;
+
+		// if (xPos > 240) {
+		// 	if (check1 == false) {
+		// 		xPos = 240;
+		// 	}
+		// }
+
+		// frame++;
+		
+		// if (gMario.getStatus() == 1 && frame == 36) {
+		// 	frame == 0;
+		// }
 
         // update screen
         SDL_RenderPresent( gRenderer );
