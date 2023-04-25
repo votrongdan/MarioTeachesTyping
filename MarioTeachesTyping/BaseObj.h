@@ -21,6 +21,9 @@ class BaseObj {
         // load media from file
         bool loadMedia(SDL_Renderer* renderer, string path);
 
+        // creates image from font string
+        bool loadFromRenderedText( SDL_Renderer* renderer, TTF_Font* font, string textureText, SDL_Color textColor );
+
         // render obj
         void render(int x, int y, SDL_Renderer* renderer, SDL_Rect* clip = NULL);
 

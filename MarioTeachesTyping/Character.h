@@ -4,7 +4,7 @@
 #include "CommonFunc.h"
 #include "BaseObj.h"
 
-class Character {
+class Character : public BaseObj {
 
     public:
 
@@ -23,7 +23,7 @@ class Character {
         int getThreat();
 
         // render a character
-        void renderCharacter(SDL_Renderer* renderer);
+        void renderCharacter(SDL_Renderer* renderer, string text);
 
     private:
 
@@ -33,8 +33,9 @@ class Character {
         // initialize threat
         int threat;
 
-        // initialize x condinate of character
+        // initialize position of character
         int xPos;
+        int yPos;
 
         // // initialize turtle
         // Turtle gTurtle;
@@ -52,6 +53,8 @@ class Turtle : public BaseObj {
         ~Turtle();
 
         void renderTurtle(SDL_Renderer* renderer, int x);
+
+        int getYPos() {return yPos;}
     
     private:
 
@@ -67,6 +70,8 @@ class Tile : public BaseObj {
         ~Tile();
 
         void renderTile(SDL_Renderer* renderer, int x);
+
+        int getYPos() {return yPos;}
     
     private:
 

@@ -16,7 +16,7 @@ LIBRARY_PATHS = -LC:\SDL\SDL2-devel-2.26.3-mingw\SDL2-2.26.3\x86_64-w64-mingw32\
 # COMPILER_FLAGS = -w -Wl,-subsystem,windows
 
 #LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+LINKER_FLAGS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
 
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = main

@@ -14,6 +14,8 @@ Turtle gTurtle;
 
 Tile gTile;
 
+Character c;
+
 bool init() {
 
 	//Initialization flag
@@ -56,6 +58,12 @@ bool init() {
 					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
 					success = false;
 				}
+
+				 //Initialize SDL_ttf
+				if( TTF_Init() == -1 ) {
+					printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+					success = false;
+				}
 			}
 		}
 	}
@@ -66,6 +74,14 @@ bool init() {
 bool loadMedia () {
 
     bool success = true;
+
+	//Open the font
+	gFont = TTF_OpenFont( "roboto.ttf", 48 );
+	if( gFont == NULL )
+	{
+		printf( "Failed to load roboto font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = false;
+	}
 
     if ( !gBackground.loadMedia(gRenderer, "media/image/background.png" ) ) {
 		printf( "Failed to load background' texture image!\n" );
@@ -103,6 +119,11 @@ void close () {
 	gMario.free();
 	gTurtle.free();
 	gTile.free();
+	c.free();
+
+	//Free global font
+    TTF_CloseFont( gFont );
+    gFont = NULL;
 
 	//Destroy window	
 	SDL_DestroyRenderer( gRenderer );
@@ -136,14 +157,29 @@ int main( int argc, char* args[] ) {
 	// initialize flag to stop
 	int stop = 240;
 
+	// set text color
+	SDL_Color textColor = { 255, 255, 255, 255 };
+
 	vector<Character> arrChar;
 
 	for (int i = 0; i < 5; i++) {
-		Character c;
 		c.createChar();
 		c.createThreat();
+
 		arrChar.push_back(c);
+
 	}
+
+	for (int i = 0; i < 5; i++) {
+		string s(1, arrChar[i].getChar());
+		if (!arrChar[i].loadFromRenderedText(gRenderer, gFont, s, textColor)) {
+			printf( "Unable to render character texture!\n" );
+			return -1;
+		}
+	}
+
+
+	Character mainChar = arrChar[0];;
 
     // main loop flag
     bool quit = false;
@@ -159,25 +195,37 @@ int main( int argc, char* args[] ) {
             if ( e.type == SDL_QUIT ) {
                 quit = true;
             } else if (e.type == SDL_KEYDOWN) {
-				
-				// switch (e.key.keysym.sym) {
 
-				// 	case SDLK_UP:
-				// 		gMario.setStatus(1);
-				// 		frame = 0;
-				// 		check1 = true;
-				// 		break;
-				// 	case SDLK_DOWN:
-				// 		gMario.setStatus(2);
-				// 		break;
-				// }
-
+				if (e.key.keysym.sym == mainChar.getChar()) {
+					arrChar[0].free();
+					arrChar.erase(arrChar.begin());
+					stop += 240;
+				}
 
 			}
         } 
 
-        //SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+		if (arrChar.size() < 5) {
+
+			c.createChar();
+			c.createThreat();
+
+			arrChar.push_back(c);
+
+		}
+
+        SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear( gRenderer );
+
+		for (int i = 0; i < 5; i++) {
+			string s(1, arrChar[i].getChar());
+			if (!arrChar[i].loadFromRenderedText(gRenderer, gFont, s, textColor)) {
+				printf( "Unable to render character texture!\n" );
+				return -1;
+			}
+		}
+
+		mainChar = arrChar[0];
 
 		// render background
         gBackground.render(0, 0, gRenderer);
@@ -185,13 +233,20 @@ int main( int argc, char* args[] ) {
 		// render road
 		road.renderRoad(gRenderer);
 
+
+
 		for (int i = 0; i < 5; i++) {
+			int xThreat = stop + i * 240;
 			if (arrChar[i].getThreat() == 0) {
-				gTurtle.renderTurtle(gRenderer, stop + i * 240);
+				gTurtle.renderTurtle(gRenderer, xThreat);
+				arrChar[i].render(xThreat + 34, gTurtle.getYPos() + 29, gRenderer);
 			} else {
-				gTile.renderTile(gRenderer, stop + i * 240);
+				gTile.renderTile(gRenderer, xThreat);
+				arrChar[i].render(xThreat + 34, gTile.getYPos() + 21, gRenderer);
 			}
 		}
+
+		mainChar.render(576, 570, gRenderer);
 
 		// gMario.run(gRenderer, xPos, yPos, frame % 6);
 		// xPos += 1;

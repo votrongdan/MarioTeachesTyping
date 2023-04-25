@@ -8,6 +8,7 @@ class Mario : public BaseObj {
 
     public:
 
+        // initialise Mario
         Mario();
         ~Mario();
 
@@ -17,17 +18,25 @@ class Mario : public BaseObj {
         // render Mario
         void renderMario(SDL_Renderer* renderer);
 
+        // render Mario running
         void run(SDL_Renderer* renderer, double x, double y, int f);
         
+        // render Mario standing
         void stand(SDL_Renderer* renderer, double x, double y, int f = 0);
 
+        // render Mario jumping
         void jump(SDL_Renderer* renderer, double x, double y, int f);
 
+        // get x condinate of Mario
         int getXPos();
 
+        // get y condinate of Mario
         int getYPos();
 
+        // set Mario status
         void setStatus(int status);
+
+        // get Mario status
         int getStatus();
 
     private:
@@ -46,14 +55,15 @@ class Mario : public BaseObj {
         int widthMario;
         int heightMario;
 
+        // initialize clips of status
         SDL_Rect runClips[6];
         SDL_Rect jumpClips[11];
         SDL_Rect standClips[9];
 
+        // initialize frame of clip
         int frame;
 
-        int count;
-
+        // initialize status
         int status;
 
 

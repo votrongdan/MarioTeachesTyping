@@ -8,6 +8,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <SDL_ttf.h>
 
 using namespace std;
 
@@ -20,6 +21,9 @@ static SDL_Window* gWindow = NULL;
 
 // the window renderer
 static SDL_Renderer* gRenderer = NULL;
+
+//Globally used font
+static TTF_Font *gFont = NULL;
 
 // the y coordinate of sky line 
 #define SKY_LINE 480

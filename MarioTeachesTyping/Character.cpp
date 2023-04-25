@@ -7,6 +7,7 @@ Character::Character() {
     threat = -1;
 
     xPos = 0;
+    yPos = 0;
 
 }
 
@@ -36,15 +37,8 @@ int Character::getThreat() {
 
 
 
-void Character::renderCharacter(SDL_Renderer* renderer) {
+void Character::renderCharacter(SDL_Renderer* renderer, string text) {
 
-    // if (threat == 0) {
-    //     gTurtle.renderTurtle(renderer, xPos);
-    // } else {
-    //     gTile.renderTile(renderer, xPos);
-    // }
-
-    
 
 }
 
