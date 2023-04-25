@@ -76,7 +76,7 @@ bool loadMedia () {
     bool success = true;
 
 	//Open the font
-	gFont = TTF_OpenFont( "roboto.ttf", 48 );
+	gFont = TTF_OpenFont( "media/font/roboto.ttf", 48 );
 	if( gFont == NULL )
 	{
 		printf( "Failed to load roboto font! SDL_ttf Error: %s\n", TTF_GetError() );
@@ -152,8 +152,6 @@ int main( int argc, char* args[] ) {
         return -1;
     }
 
-	int frame = 0;
-
 	// initialize flag to stop
 	int stop = 240;
 
@@ -197,13 +195,19 @@ int main( int argc, char* args[] ) {
             } else if (e.type == SDL_KEYDOWN) {
 
 				if (e.key.keysym.sym == mainChar.getChar()) {
-					arrChar[0].free();
-					arrChar.erase(arrChar.begin());
-					stop += 240;
+					mainChar.setDead(true);
 				}
 
 			}
+
         } 
+
+		if (mainChar.isDead() == true) {
+
+			arrChar.erase(arrChar.begin());
+			stop += 240;
+			
+		}
 
 		if (arrChar.size() < 5) {
 

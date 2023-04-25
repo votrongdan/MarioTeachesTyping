@@ -22,6 +22,10 @@ class Character : public BaseObj {
         // get Threat
         int getThreat();
 
+        void setDead(bool isTrue);
+
+        bool isDead();
+
     private:
 
         // initialize character
@@ -29,6 +33,8 @@ class Character : public BaseObj {
         
         // initialize threat
         int threat;
+
+        bool dead;
 
 };
 

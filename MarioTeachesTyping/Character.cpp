@@ -6,6 +6,8 @@ Character::Character() {
 
     threat = -1;
 
+    dead = false;
+
 }
 
 void Character::createChar() {
@@ -29,6 +31,18 @@ void Character::createThreat() {
 int Character::getThreat() {
 
     return threat;
+
+}
+
+void Character::setDead(bool isTrue) {
+
+    dead = isTrue;
+
+}
+
+bool Character::isDead() {
+
+    return dead;
 
 }
 
