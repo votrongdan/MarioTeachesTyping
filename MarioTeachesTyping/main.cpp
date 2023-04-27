@@ -253,7 +253,6 @@ int main( int argc, char* args[] ) {
 		// render main character
 		mainChar.render(562, 562, gRenderer);
 
-
 		if (gMario.getXPos() < stop - 70) {
 			gMario.run(gRenderer);
 		} 
@@ -263,10 +262,6 @@ int main( int argc, char* args[] ) {
 		else if (gMario.getXPos() == stop - 70) {
 			gMario.stand(gRenderer);
 		}
-
-		
-
-
 
         // update screen
         SDL_RenderPresent( gRenderer );
