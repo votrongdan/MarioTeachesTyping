@@ -3,6 +3,7 @@
 #include "Road.h"
 #include "Mario.h"
 #include "Character.h"
+#include "Timer.h"
 
 BaseObj gBackground;
 
@@ -180,8 +181,18 @@ int main( int argc, char* args[] ) {
     // event handler
     SDL_Event e;
 
+	//The frames per second timer
+	Timer fpsTimer;
+
+	//The frames per second cap timer
+	Timer capTimer;
+
+	fpsTimer.start();
+
     // while app is running
     while (!quit) {
+
+		capTimer.start();
 
         while( SDL_PollEvent( &e ) != 0 ) {
             //User requests quit
@@ -256,16 +267,23 @@ int main( int argc, char* args[] ) {
 		if (gMario.getXPos() < stop - 70) {
 			gMario.run(gRenderer);
 		} 
-		else if (gMario.getXPos() == stop - 70 && mainChar.getThreat() == 1) {
-			gMario.jump(gRenderer);
-		}
-		else if (gMario.getXPos() == stop - 70) {
+		// else if (gMario.getXPos() == stop - 70 && mainChar.getThreat() == 1) {
+		// 	gMario.jump(gRenderer);
+		// }
+		else if (gMario.getXPos() >= stop - 70) {
 			gMario.stand(gRenderer);
 		}
 
         // update screen
         SDL_RenderPresent( gRenderer );
 
+		//If frame finished early
+		int frameTicks = capTimer.getTicks();
+		if( frameTicks < SCREEN_TICKS_PER_FRAME )
+		{
+			//Wait remaining time
+			SDL_Delay( SCREEN_TICKS_PER_FRAME - frameTicks );
+		}
 
     }
 
