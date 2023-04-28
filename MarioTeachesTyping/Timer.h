@@ -22,6 +22,9 @@ class Timer
 		bool isStarted();
 		bool isPaused();
 
+		// convert time to string
+		string convert();
+
     private:
 		//The clock time when the timer started
 		Uint32 mStartTicks;
@@ -32,6 +35,7 @@ class Timer
 		//The timer status
 		bool mPaused;
 		bool mStarted;
+
 };
 
 #endif

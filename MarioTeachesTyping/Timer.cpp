@@ -8,6 +8,7 @@ Timer::Timer()
 
     mPaused = false;
     mStarted = false;
+    
 }
 
 void Timer::start()
@@ -100,4 +101,28 @@ bool Timer::isPaused()
 {
 	//Timer is running and paused
     return mPaused && mStarted;
+}
+
+string Timer::convert() {
+
+    int unit = getTicks() / 1000;
+
+    int hour = unit / 3600;
+    
+    int minute = (unit - hour * 3600) / 60;
+
+    int second = (unit - hour * 3600 - minute * 60);
+
+    string sHour = to_string(hour);
+    if (sHour.size() == 1) sHour = "0" + sHour;
+
+    string sMinute = to_string(minute);
+    if (sMinute.size() == 1) sMinute = "0" + sMinute;
+
+    string sSecond = to_string(second);
+    if (sSecond.size() == 1) sSecond = "0" + sSecond;
+
+    string time = sHour + ":" + sMinute + ":" + sSecond;
+
+    return time;
 }

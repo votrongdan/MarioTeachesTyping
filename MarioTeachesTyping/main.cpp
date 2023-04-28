@@ -7,6 +7,8 @@
 
 BaseObj gBackground;
 
+BaseObj gameTimeTexture;
+
 Road road;
 
 Mario gMario;
@@ -78,8 +80,12 @@ bool loadMedia () {
 
 	//Open the font
 	gFont = TTF_OpenFont( "media/font/roboto.ttf", 48 );
-	if( gFont == NULL )
-	{
+	if( gFont == NULL ) {
+		printf( "Failed to load roboto font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = false;
+	}
+	gameFont = TTF_OpenFont( "media/font/roboto.ttf", 32 );
+	if( gameFont == NULL ) {
 		printf( "Failed to load roboto font! SDL_ttf Error: %s\n", TTF_GetError() );
 		success = false;
 	}
@@ -125,6 +131,7 @@ void close () {
 	//Free global font
     TTF_CloseFont( gFont );
     gFont = NULL;
+	gameFont = NULL;
 
 	//Destroy window	
 	SDL_DestroyRenderer( gRenderer );
@@ -181,13 +188,19 @@ int main( int argc, char* args[] ) {
     // event handler
     SDL_Event e;
 
-	//The frames per second timer
-	Timer fpsTimer;
-
 	//The frames per second cap timer
 	Timer capTimer;
 
-	fpsTimer.start();
+	// the time of game
+	Timer gameTimer;
+
+	gameTimer.start();
+
+	// count true pressing
+	int typed = 0;
+
+	// count false pressing
+	int error = 0;
 
     // while app is running
     while (!quit) {
@@ -202,9 +215,10 @@ int main( int argc, char* args[] ) {
 
 				if (e.key.keysym.sym == mainChar.getChar()) {
 					mainChar.setDead(true);
-
-
-
+					typed++;
+				} 
+				else {
+					error++;
 				}
 
 			}
@@ -240,11 +254,21 @@ int main( int argc, char* args[] ) {
 				return -1;
 			}
 		}
+		// cout << gameTimer.convert() << endl;
+		// load time of game
+		if (!gameTimeTexture.loadFromRenderedText(gRenderer, gameFont, gameTimer.convert(), textColor)) {
+			printf("Unable to render game time texture!\n");
+			return -1;
+		}
+
+		
 
 		mainChar = arrChar[0];
 
 		// render background
         gBackground.render(0, 0, gRenderer);
+
+		gameTimeTexture.render(40, 560, gRenderer);
 
 		// render road
 		road.renderRoad(gRenderer, xRoad);
@@ -279,8 +303,7 @@ int main( int argc, char* args[] ) {
 
 		//If frame finished early
 		int frameTicks = capTimer.getTicks();
-		if( frameTicks < SCREEN_TICKS_PER_FRAME )
-		{
+		if( frameTicks < SCREEN_TICKS_PER_FRAME ) {
 			//Wait remaining time
 			SDL_Delay( SCREEN_TICKS_PER_FRAME - frameTicks );
 		}

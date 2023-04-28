@@ -171,7 +171,7 @@ void Mario::run(SDL_Renderer* renderer) {
 
     SDL_Rect currentClip;
 
-    currentClip = runClips[frame / 6];
+    currentClip = runClips[frame / 5];
 
     BaseObj::render(xPos, yPos - currentClip.h, renderer, &currentClip);
     
@@ -179,7 +179,7 @@ void Mario::run(SDL_Renderer* renderer) {
 
     frame++;
 
-    if (frame == 36) frame = 0;
+    if (frame == 30) frame = 0;
 }
 
 void Mario::stand(SDL_Renderer* renderer) {
