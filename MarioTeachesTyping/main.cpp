@@ -9,6 +9,10 @@ BaseObj gBackground;
 
 BaseObj gameTimeTexture;
 
+BaseObj typedTexture;
+
+BaseObj errorTexture;
+
 Road road;
 
 Mario gMario;
@@ -261,7 +265,15 @@ int main( int argc, char* args[] ) {
 			return -1;
 		}
 
-		
+		if (!typedTexture.loadFromRenderedText(gRenderer, gameFont, "Typed: " + to_string(typed), textColor)) {
+			printf("Unable to render typed texture!\n");
+			return -1;
+		}
+
+		if (!errorTexture.loadFromRenderedText(gRenderer, gameFont, "Error: " + to_string(error), textColor)) {
+			printf("Unable to render error texture!\n");
+			return -1;
+		}
 
 		mainChar = arrChar[0];
 
@@ -269,6 +281,10 @@ int main( int argc, char* args[] ) {
         gBackground.render(0, 0, gRenderer);
 
 		gameTimeTexture.render(40, 560, gRenderer);
+
+		typedTexture.render(40, 640, gRenderer);
+
+		errorTexture.render(900, 640, gRenderer);
 
 		// render road
 		road.renderRoad(gRenderer, xRoad);
