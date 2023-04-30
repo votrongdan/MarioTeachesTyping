@@ -131,6 +131,9 @@ void close () {
 	gTurtle.free();
 	gTile.free();
 	c.free();
+	gameTimeTexture.free();
+	typedTexture.free();
+	errorTexture.free();
 
 	//Free global font
     TTF_CloseFont( gFont );
@@ -206,6 +209,9 @@ int main( int argc, char* args[] ) {
 	// count false pressing
 	int error = 0;
 
+	// the area camera
+	SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+
     // while app is running
     while (!quit) {
 
@@ -247,9 +253,6 @@ int main( int argc, char* args[] ) {
 
 		}
 
-        SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-        SDL_RenderClear( gRenderer );
-
 		// load character texture
 		for (int i = 0; i < 5; i++) {
 			string s(1, arrChar[i].getChar());
@@ -258,8 +261,7 @@ int main( int argc, char* args[] ) {
 				return -1;
 			}
 		}
-		// cout << gameTimer.convert() << endl;
-		// load time of game
+
 		if (!gameTimeTexture.loadFromRenderedText(gRenderer, gameFont, gameTimer.convert(), textColor)) {
 			printf("Unable to render game time texture!\n");
 			return -1;
@@ -277,6 +279,13 @@ int main( int argc, char* args[] ) {
 
 		mainChar = arrChar[0];
 
+		if (gMario.getXPos() - camera.x > 96) {
+			camera.x += 5;
+		}
+
+        SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+        SDL_RenderClear( gRenderer );
+
 		// render background
         gBackground.render(0, 0, gRenderer);
 
@@ -286,12 +295,16 @@ int main( int argc, char* args[] ) {
 
 		errorTexture.render(900, 640, gRenderer);
 
+		if (xRoad + SCREEN_WIDTH <= camera.x) {
+			xRoad += SCREEN_WIDTH;
+		}
+		
 		// render road
-		road.renderRoad(gRenderer, xRoad);
+		road.renderRoad(gRenderer, xRoad - camera.x);
 
 		// render threat and character
 		for (int i = 0; i < 5; i++) {
-			int xThreat = stop + i * 240;
+			int xThreat = stop + i * 240 - camera.x;
 			if (arrChar[i].getThreat() == 0) {
 				gTurtle.renderTurtle(gRenderer, xThreat);
 				arrChar[i].render(xThreat + 34, gTurtle.getYPos() + 29, gRenderer);
@@ -305,13 +318,13 @@ int main( int argc, char* args[] ) {
 		mainChar.render(562, 562, gRenderer);
 
 		if (gMario.getXPos() < stop - 70) {
-			gMario.run(gRenderer);
+			gMario.run(gRenderer, camera.x);
 		} 
 		// else if (gMario.getXPos() == stop - 70 && mainChar.getThreat() == 1) {
 		// 	gMario.jump(gRenderer);
 		// }
 		else if (gMario.getXPos() >= stop - 70) {
-			gMario.stand(gRenderer);
+			gMario.stand(gRenderer, camera.x);
 		}
 
         // update screen

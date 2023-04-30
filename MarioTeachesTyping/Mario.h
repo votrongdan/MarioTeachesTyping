@@ -19,10 +19,10 @@ class Mario : public BaseObj {
         void renderMario(SDL_Renderer* renderer);
 
         // render Mario running
-        void run(SDL_Renderer* renderer);
+        void run(SDL_Renderer* renderer, int camX);
         
         // render Mario standing
-        void stand(SDL_Renderer* renderer);
+        void stand(SDL_Renderer* renderer, int camX);
 
         // render Mario jumping
         void jump(SDL_Renderer* renderer);

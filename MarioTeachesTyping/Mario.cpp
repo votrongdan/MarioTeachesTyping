@@ -167,13 +167,13 @@ void Mario::jump(SDL_Renderer* renderer) {
 
 }
 
-void Mario::run(SDL_Renderer* renderer) {
+void Mario::run(SDL_Renderer* renderer, int camX) {
 
     SDL_Rect currentClip;
 
     currentClip = runClips[frame / 5];
 
-    BaseObj::render(xPos, yPos - currentClip.h, renderer, &currentClip);
+    BaseObj::render(xPos - camX, yPos - currentClip.h, renderer, &currentClip);
     
     xPos += 10;
 
@@ -182,13 +182,13 @@ void Mario::run(SDL_Renderer* renderer) {
     if (frame == 30) frame = 0;
 }
 
-void Mario::stand(SDL_Renderer* renderer) {
+void Mario::stand(SDL_Renderer* renderer, int camX) {
 
     SDL_Rect currentClip;
 
     currentClip = standClips[0];
 
-    BaseObj::render(xPos, yPos - currentClip.h, renderer, &currentClip);
+    BaseObj::render(xPos - camX, yPos - currentClip.h, renderer, &currentClip);
 
 }
 
