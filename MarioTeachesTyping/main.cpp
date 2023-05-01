@@ -4,6 +4,7 @@
 #include "Mario.h"
 #include "Character.h"
 #include "Timer.h"
+#include "Hand.h"
 
 BaseObj gBackground;
 
@@ -14,6 +15,10 @@ BaseObj typedTexture;
 BaseObj errorTexture;
 
 Road road;
+
+RightHand rightHand;
+
+LeftHand leftHand;
 
 Mario gMario;
 
@@ -116,6 +121,16 @@ bool loadMedia () {
 
 	if (!gTile.loadMedia(gRenderer, "media/image/tile.png" ) ) {
 		printf( "Failed to load tile' texture image!\n" );
+		success = false;
+	}
+
+	if (!rightHand.loadRightHand(gRenderer, "media/image/rightHand.png")) {
+		printf( "Failed to load right hand' texture image!\n" );
+		success = false;
+	}
+
+	if (!leftHand.loadLeftHand(gRenderer, "media/image/leftHand.png")) {
+		printf( "Failed to load left hand' texture image!\n" );
 		success = false;
 	}
 
@@ -293,7 +308,10 @@ int main( int argc, char* args[] ) {
 
 		typedTexture.render(40, 640, gRenderer);
 
-		errorTexture.render(900, 640, gRenderer);
+		errorTexture.render(950, 640, gRenderer);
+
+		rightHand.renderRightHand(gRenderer, mainChar.getChar());
+		leftHand.renderLeftHand(gRenderer, mainChar.getChar());
 
 		if (xRoad + SCREEN_WIDTH <= camera.x) {
 			xRoad += SCREEN_WIDTH;
