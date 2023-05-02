@@ -14,6 +14,8 @@ BaseObj typedTexture;
 
 BaseObj errorTexture;
 
+BaseObj temp;
+
 Road road;
 
 RightHand rightHand;
@@ -196,7 +198,7 @@ int main( int argc, char* args[] ) {
 	vector<Character> arrChar;
 
 	// create five character
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 4; i++) {
 		c.createChar();
 		c.createThreat();
 
@@ -262,7 +264,7 @@ int main( int argc, char* args[] ) {
 		}
 
 		// add character
-		while (arrChar.size() < 5) {
+		while (arrChar.size() < 4) {
 
 			c.createChar();
 			c.createThreat();
@@ -271,17 +273,13 @@ int main( int argc, char* args[] ) {
 
 		}
 
-		// load character texture
-		for (int i = 0; i < 5; i++) {
-			string s(1, arrChar[i].getChar());
-			if (!arrChar[i].loadFromRenderedText(gRenderer, gFont, s, textColor)) {
-				printf( "Unable to render character texture!\n" );
-				return -1;
-			}
-		}
+		if (!temp.loadFromRenderedText(gRenderer, gameFont, "Hello, World!", textColor)) {
+			printf("Unable to render temp texture!\n");
+			return -1;
+		}	
 
-		if (!gameTimeTexture.loadFromRenderedText(gRenderer, gameFont, gameTimer.convert(), textColor)) {
-			printf("Unable to render game time texture!\n");
+		if (!errorTexture.loadFromRenderedText(gRenderer, gameFont, "Error: " + to_string(error), textColor)) {
+			printf("Unable to render error texture!\n");
 			return -1;
 		}
 
@@ -290,15 +288,25 @@ int main( int argc, char* args[] ) {
 			return -1;
 		}
 
-		if (!errorTexture.loadFromRenderedText(gRenderer, gameFont, "Error: " + to_string(error), textColor)) {
-			printf("Unable to render error texture!\n");
+		if (!gameTimeTexture.loadFromRenderedText(gRenderer, gameFont, gameTimer.convert(), textColor)) {
+			printf("Unable to render game time texture!\n");
 			return -1;
+		}
+
+		// load character texture
+		for (int i = 0; i < 4; i++) {
+			string s(1, arrChar[i].getChar());
+			if (!arrChar[i].loadFromRenderedText(gRenderer, gFont, s, textColor)) {
+				printf( "Unable to render character texture!\n" );
+				return -1;
+			}
+
 		}
 
 		mainChar = arrChar[0];
 
 		if (gMario.getXPos() - camera.x > 96) {
-			camera.x += 5;
+			camera.x += 10;
 		}
 
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
@@ -315,10 +323,12 @@ int main( int argc, char* args[] ) {
 		road.renderRoad(gRenderer, xRoad - camera.x);
 
 		// render threat and character
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			int xThreat = stop + i * 240 - camera.x;
 			if (arrChar[i].getThreat() == 0) {
 				gTurtle.renderTurtle(gRenderer, xThreat);
+
+
 				arrChar[i].render(xThreat + 34, gTurtle.getYPos() + 29, gRenderer);
 			} else {
 				gTile.renderTile(gRenderer, xThreat);
