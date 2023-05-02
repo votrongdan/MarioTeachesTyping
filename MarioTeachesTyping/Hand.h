@@ -4,6 +4,7 @@
 #include "CommonFunc.h"
 #include "BaseObj.h"
 
+// hands dimesion constants
 #define X_RIGHT_HAND 710
 #define Y_RIGHT_HAND 560
 

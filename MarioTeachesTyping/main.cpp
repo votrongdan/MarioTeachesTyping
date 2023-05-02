@@ -56,7 +56,7 @@ bool init() {
 			success = false;
 		} else {
 			//Create renderer for window
-			gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED );
+			gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 			if ( gRenderer == NULL ) {
 				printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
 				success = false;
@@ -149,6 +149,8 @@ void close () {
 	gameTimeTexture.free();
 	typedTexture.free();
 	errorTexture.free();
+	rightHand.free();
+	leftHand.free();
 
 	//Free global font
     TTF_CloseFont( gFont );
@@ -253,13 +255,14 @@ int main( int argc, char* args[] ) {
 		// check character 
 		if (mainChar.isDead() == true) {
 
+			arrChar[0].free();
 			arrChar.erase(arrChar.begin());
 			stop += 240;
 
 		}
 
 		// add character
-		if (arrChar.size() < 5) {
+		while (arrChar.size() < 5) {
 
 			c.createChar();
 			c.createThreat();
@@ -304,15 +307,6 @@ int main( int argc, char* args[] ) {
 		// render background
         gBackground.render(0, 0, gRenderer);
 
-		gameTimeTexture.render(40, 560, gRenderer);
-
-		typedTexture.render(40, 640, gRenderer);
-
-		errorTexture.render(950, 640, gRenderer);
-
-		rightHand.renderRightHand(gRenderer, mainChar.getChar());
-		leftHand.renderLeftHand(gRenderer, mainChar.getChar());
-
 		if (xRoad + SCREEN_WIDTH <= camera.x) {
 			xRoad += SCREEN_WIDTH;
 		}
@@ -331,6 +325,15 @@ int main( int argc, char* args[] ) {
 				arrChar[i].render(xThreat + 34, gTile.getYPos() + 21, gRenderer);
 			}
 		}
+
+		gameTimeTexture.render(40, 560, gRenderer);
+
+		typedTexture.render(40, 640, gRenderer);
+
+		errorTexture.render(950, 640, gRenderer);
+
+		rightHand.renderRightHand(gRenderer, mainChar.getChar());
+		leftHand.renderLeftHand(gRenderer, mainChar.getChar());
 
 		// render main character
 		mainChar.render(562, 562, gRenderer);
