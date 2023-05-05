@@ -228,6 +228,10 @@ int main( int argc, char* args[] ) {
 	// count false pressing
 	int error = 0;
 
+	int count = 4;
+
+	bool endGame = false;
+
 	// the area camera
 	SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 
@@ -264,12 +268,14 @@ int main( int argc, char* args[] ) {
 		}
 
 		// add character
-		while (arrChar.size() < 4) {
+		while (arrChar.size() < 4 && count < MAX_THREAT) {
 
 			c.createChar();
 			c.createThreat();
 
 			arrChar.push_back(c);
+
+			count++;
 
 		}
 
@@ -294,18 +300,60 @@ int main( int argc, char* args[] ) {
 		}
 
 		// load character texture
-		for (int i = 0; i < 4; i++) {
-			string s(1, arrChar[i].getChar());
-			if (!arrChar[i].loadFromRenderedText(gRenderer, gFont, s, textColor)) {
-				printf( "Unable to render character texture!\n" );
-				return -1;
-			}
+		switch (typed) {
+			case (MAX_THREAT - 3):
+				for (int i = 0; i < 3; i++) {
+					string s(1, arrChar[i].getChar());
+					if (!arrChar[i].loadFromRenderedText(gRenderer, gFont, s, textColor)) {
+						printf( "Unable to render character texture!\n" );
+						return -1;
+					}
 
+				}
+				break;
+			case (MAX_THREAT - 2): 
+
+				for (int i = 0; i < 2; i++) {
+					string s(1, arrChar[i].getChar());
+					if (!arrChar[i].loadFromRenderedText(gRenderer, gFont, s, textColor)) {
+						printf( "Unable to render character texture!\n" );
+						return -1;
+					}
+
+				}
+				break;
+			case (MAX_THREAT - 1):
+
+				for (int i = 0; i < 1; i++) {
+					string s(1, arrChar[i].getChar());
+					if (!arrChar[i].loadFromRenderedText(gRenderer, gFont, s, textColor)) {
+						printf( "Unable to render character texture!\n" );
+						return -1;
+					}
+
+				}
+				break;
+			case MAX_THREAT:
+				endGame = true;
+				break;
+			
+			default:
+
+				for (int i = 0; i < 4; i++) {
+					string s(1, arrChar[i].getChar());
+					if (!arrChar[i].loadFromRenderedText(gRenderer, gFont, s, textColor)) {
+						printf( "Unable to render character texture!\n" );
+						return -1;
+					}
+
+				} 
+				break;
 		}
+		
 
 		mainChar = arrChar[0];
 
-		if (gMario.getXPos() - camera.x > 96) {
+		if (gMario.getXPos() - camera.x > 96 && (camera.x + SCREEN_WIDTH) < (MAX_THREAT + 1) * 240) {
 			camera.x += 10;
 		}
 
@@ -336,6 +384,77 @@ int main( int argc, char* args[] ) {
 			}
 		}
 
+		// load character texture
+		switch (typed) {
+			case (MAX_THREAT - 3):
+
+				// render threat and character
+				for (int i = 0; i < 3; i++) {
+					int xThreat = stop + i * 240 - camera.x;
+					if (arrChar[i].getThreat() == 0) {
+						gTurtle.renderTurtle(gRenderer, xThreat);
+
+
+						arrChar[i].render(xThreat + 34, gTurtle.getYPos() + 29, gRenderer);
+					} else {
+						gTile.renderTile(gRenderer, xThreat);
+						arrChar[i].render(xThreat + 34, gTile.getYPos() + 21, gRenderer);
+					}
+				}
+				break;
+			case (MAX_THREAT - 2): 
+
+				// render threat and character
+				for (int i = 0; i < 2; i++) {
+					int xThreat = stop + i * 240 - camera.x;
+					if (arrChar[i].getThreat() == 0) {
+						gTurtle.renderTurtle(gRenderer, xThreat);
+
+
+						arrChar[i].render(xThreat + 34, gTurtle.getYPos() + 29, gRenderer);
+					} else {
+						gTile.renderTile(gRenderer, xThreat);
+						arrChar[i].render(xThreat + 34, gTile.getYPos() + 21, gRenderer);
+					}
+				}
+				break;
+			case (MAX_THREAT - 1):
+
+				// render threat and character
+				for (int i = 0; i < 1; i++) {
+					int xThreat = stop + i * 240 - camera.x;
+					if (arrChar[i].getThreat() == 0) {
+						gTurtle.renderTurtle(gRenderer, xThreat);
+
+
+						arrChar[i].render(xThreat + 34, gTurtle.getYPos() + 29, gRenderer);
+					} else {
+						gTile.renderTile(gRenderer, xThreat);
+						arrChar[i].render(xThreat + 34, gTile.getYPos() + 21, gRenderer);
+					}
+				}
+				break;
+			case MAX_THREAT:
+				endGame = true;
+				break;
+			
+			default:
+
+				// render threat and character
+				for (int i = 0; i < 4; i++) {
+					int xThreat = stop + i * 240 - camera.x;
+					if (arrChar[i].getThreat() == 0) {
+						gTurtle.renderTurtle(gRenderer, xThreat);
+
+
+						arrChar[i].render(xThreat + 34, gTurtle.getYPos() + 29, gRenderer);
+					} else {
+						gTile.renderTile(gRenderer, xThreat);
+						arrChar[i].render(xThreat + 34, gTile.getYPos() + 21, gRenderer);
+					}
+				}
+				break;
+		}
 		gameTimeTexture.render(40, 560, gRenderer);
 
 		typedTexture.render(40, 640, gRenderer);
