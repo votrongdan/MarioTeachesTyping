@@ -53,7 +53,9 @@ class Mario : public BaseObj {
         SDL_Rect standClips[9];
 
         // initialize frame of clip
-        int frame;
+        int runFrame;
+        int jumpFrame;
+        int standFrame;
 
         // initialize status
         int status;

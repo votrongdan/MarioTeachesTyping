@@ -228,9 +228,13 @@ int main( int argc, char* args[] ) {
 	// count false pressing
 	int error = 0;
 
+	// count threat
 	int count = 4;
 
+	// end game flag
 	bool endGame = false;
+
+	double velCam = 0;
 
 	// the area camera
 	SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
@@ -249,6 +253,9 @@ int main( int argc, char* args[] ) {
 				if (e.key.keysym.sym == mainChar.getChar()) {
 					mainChar.setDead(true);
 					typed++;
+					if (mainChar.getThreat() == 1) {
+						gMario.setStatus(2);
+					}
 				} 
 				else {
 					error++;
@@ -334,7 +341,6 @@ int main( int argc, char* args[] ) {
 				}
 				break;
 			case MAX_THREAT:
-				endGame = true;
 				break;
 			
 			default:
@@ -353,8 +359,35 @@ int main( int argc, char* args[] ) {
 
 		mainChar = arrChar[0];
 
-		if (gMario.getXPos() - camera.x > 96 && (camera.x + SCREEN_WIDTH) < (MAX_THREAT + 1) * 240) {
-			camera.x += 10;
+		// if (gMario.getXPos() - camera.x > 96 && (camera.x + SCREEN_WIDTH) < (MAX_THREAT + 1) * 240) {
+		// 	camera.x += 10;
+		// }
+
+		// if ((camera.x + SCREEN_WIDTH) < (MAX_THREAT + 1) * 240) {
+		// 	if (gMario.getXPos() - camera.x <= 96) {
+		// 		velCam = 0;
+		// 	}
+		// 	else if (gMario.getXPos() - camera.x > 96 && gMario.getXPos() - camera.x <= (24 * 5)) {
+		// 		velCam = 1;
+		// 	} 
+		// 	else if (gMario.getXPos() - camera.x > (24 * 5) && gMario.getXPos() - camera.x <= (24 * 9)) {
+		// 		velCam = 2;
+		// 	} 
+		// 	else if (gMario.getXPos() - camera.x > (24 * 9) && gMario.getXPos() - camera.x <= (24 * 13)) {
+		// 		velCam = 4;
+		// 	} 
+		// 	else if (gMario.getXPos() -camera.x > (24 * 13)) {
+		// 		velCam = 10;
+		// 	} 
+
+		// } else {
+		// 	velCam = 0;
+		// }
+
+		
+
+		if ((camera.x + SCREEN_WIDTH) < (MAX_THREAT + 1) * 240) {
+			camera.x += velCam;
 		}
 
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
@@ -370,21 +403,6 @@ int main( int argc, char* args[] ) {
 		// render road
 		road.renderRoad(gRenderer, xRoad - camera.x);
 
-		// render threat and character
-		for (int i = 0; i < 4; i++) {
-			int xThreat = stop + i * 240 - camera.x;
-			if (arrChar[i].getThreat() == 0) {
-				gTurtle.renderTurtle(gRenderer, xThreat);
-
-
-				arrChar[i].render(xThreat + 34, gTurtle.getYPos() + 29, gRenderer);
-			} else {
-				gTile.renderTile(gRenderer, xThreat);
-				arrChar[i].render(xThreat + 34, gTile.getYPos() + 21, gRenderer);
-			}
-		}
-
-		// load character texture
 		switch (typed) {
 			case (MAX_THREAT - 3):
 
@@ -467,15 +485,43 @@ int main( int argc, char* args[] ) {
 		// render main character
 		mainChar.render(562, 562, gRenderer);
 
-		if (gMario.getXPos() < stop - 70) {
-			gMario.run(gRenderer, camera.x);
-		} 
-		// else if (gMario.getXPos() == stop - 70 && mainChar.getThreat() == 1) {
-		// 	gMario.jump(gRenderer);
+		// if (gMario.getXPos() < stop - 70) {
+		// 	gMario.run(gRenderer, camera.x);
+		// } 
+		// // else if (gMario.getXPos() == stop - 70 && mainChar.getThreat() == 1) {
+		// // 	gMario.jump(gRenderer);
+		// // }
+		// else if (gMario.getXPos() >= stop - 70) {
+		// 	gMario.stand(gRenderer, camera.x);
 		// }
-		else if (gMario.getXPos() >= stop - 70) {
-			gMario.stand(gRenderer, camera.x);
+
+		if (gMario.getXPos() < stop - 70 && gMario.getStatus() != 2) {
+			gMario.setStatus(1);
+			velCam += 0.1;
+		} else if (gMario.getXPos() >= stop - 70) {
+			gMario.setStatus(0);
+			velCam -= 0.1;
 		}
+
+		if (velCam <= 1) {
+			velCam = 1;
+		} 
+
+		if (gMario.getXPos() - camera.x < 192) {
+			velCam = 1;
+		}
+
+		if (velCam >= 10) {
+			velCam = 10;
+		}
+
+		if (gMario.getXPos() - camera.x < 96) {
+			velCam = 0;
+		}
+
+		// cout << velCam << " ";
+
+		gMario.run(gRenderer, camera.x);
 
         // update screen
         SDL_RenderPresent( gRenderer );
