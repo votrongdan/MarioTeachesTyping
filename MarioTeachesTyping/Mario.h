@@ -4,6 +4,8 @@
 #include "CommonFunc.h"
 #include "BaseObj.h"
 
+#define BASE_VEL 10
+
 class Mario : public BaseObj {
 
     public:
@@ -19,7 +21,7 @@ class Mario : public BaseObj {
         void renderMario(SDL_Renderer* renderer);
 
         // render Mario running
-        void run(SDL_Renderer* renderer, int camX);
+        void run(SDL_Renderer* renderer, int camX, int stop);
         
         // render Mario standing
         void stand(SDL_Renderer* renderer, int camX);
@@ -59,6 +61,9 @@ class Mario : public BaseObj {
 
         // initialize status
         int status;
+
+        // initialize velocity of Mario
+        double vel;
 
 
 };

@@ -11,6 +11,8 @@ Mario::Mario() {
     jumpFrame = 0;
     standFrame = 0;
 
+    vel = BASE_VEL;
+
 }
 
 Mario::~Mario() {
@@ -174,7 +176,7 @@ void Mario::jump(SDL_Renderer* renderer) {
 
 }
 
-void Mario::run(SDL_Renderer* renderer, int camX) {
+void Mario::run(SDL_Renderer* renderer, int camX, int stop) {
 
     SDL_Rect currentClip = {0, 0, 0, 0};
 
@@ -187,6 +189,19 @@ void Mario::run(SDL_Renderer* renderer, int camX) {
     // frame++;
 
     // if (frame == 30) frame = 0;
+
+    if (xPos < stop - 70) {
+        vel += 0.01;
+    } else {
+        vel -= 0.01;
+    }
+
+    if (vel <= BASE_VEL) {
+        vel = BASE_VEL;
+    }
+
+    // cout << vel << " ";
+
     if (status == 1) {
 
         jumpFrame = 0;
@@ -196,7 +211,7 @@ void Mario::run(SDL_Renderer* renderer, int camX) {
 
         BaseObj::render(xPos - camX, yPos - currentClip.h, renderer, &currentClip);
 
-        xPos += 10;
+        xPos += vel;
 
         runFrame++;
 
@@ -218,7 +233,7 @@ void Mario::run(SDL_Renderer* renderer, int camX) {
             yPos += 15;
         }
 
-        xPos += 4;
+        xPos += vel / 2;
         if (jumpFrame == 24) {
             jumpFrame = 0;
             status = 1;

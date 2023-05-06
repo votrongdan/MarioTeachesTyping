@@ -14,6 +14,8 @@ BaseObj typedTexture;
 
 BaseObj errorTexture;
 
+BaseObj wordPerMinute;
+
 BaseObj temp;
 
 Road road;
@@ -236,6 +238,8 @@ int main( int argc, char* args[] ) {
 
 	double velCam = 0;
 
+	int wpm = 0;
+
 	// the area camera
 	SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 
@@ -274,6 +278,9 @@ int main( int argc, char* args[] ) {
 
 		}
 
+		// calculate wpm
+		wpm = 0;
+
 		// add character
 		while (arrChar.size() < 4 && count < MAX_THREAT) {
 
@@ -298,6 +305,11 @@ int main( int argc, char* args[] ) {
 
 		if (!typedTexture.loadFromRenderedText(gRenderer, gameFont, "Typed: " + to_string(typed), textColor)) {
 			printf("Unable to render typed texture!\n");
+			return -1;
+		}
+
+		if (!wordPerMinute.loadFromRenderedText(gRenderer, gameFont, "WPM: " + to_string(wpm), textColor)) {
+			printf("Unable to render wpm texture!\n");
 			return -1;
 		}
 
@@ -479,6 +491,8 @@ int main( int argc, char* args[] ) {
 
 		errorTexture.render(950, 640, gRenderer);
 
+		wordPerMinute.render(950, 560, gRenderer);
+
 		rightHand.renderRightHand(gRenderer, mainChar.getChar());
 		leftHand.renderLeftHand(gRenderer, mainChar.getChar());
 
@@ -497,14 +511,14 @@ int main( int argc, char* args[] ) {
 
 		if (gMario.getXPos() < stop - 70 && gMario.getStatus() != 2) {
 			gMario.setStatus(1);
-			velCam += 0.1;
+			velCam += 0.15;
 		} else if (gMario.getXPos() >= stop - 70) {
 			gMario.setStatus(0);
-			velCam -= 0.1;
+			velCam -= 0.05;
 		}
 
-		if (velCam <= 1) {
-			velCam = 1;
+		if (velCam <= 2) {
+			velCam = 2;
 		} 
 
 		if (gMario.getXPos() - camera.x < 192) {
@@ -521,7 +535,7 @@ int main( int argc, char* args[] ) {
 
 		// cout << velCam << " ";
 
-		gMario.run(gRenderer, camera.x);
+		gMario.run(gRenderer, camera.x, stop);
 
         // update screen
         SDL_RenderPresent( gRenderer );
