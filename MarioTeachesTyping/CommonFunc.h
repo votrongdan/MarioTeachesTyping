@@ -2,13 +2,14 @@
 #define COMMON_FUNC_H
 
 #include <stdio.h>
-#include "SDL.h"
+#include <SDL.h>
 #include <SDL_Image.h>
 #include <string>
 #include <fstream>
 #include <iostream>
 #include <vector>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 
 using namespace std;
 

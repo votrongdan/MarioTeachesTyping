@@ -32,13 +32,17 @@ Tile gTile;
 
 Character c;
 
+Mix_Chunk *gJump = NULL;
+Mix_Chunk *gBlockhit = NULL;
+Mix_Chunk *gCoin = NULL;
+
 bool init() {
 
 	//Initialization flag
 	bool success = true;
 
 	//Initialize SDL
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
+	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO ) < 0 ) {
 		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
 		success = false;
 	} else {
@@ -80,6 +84,13 @@ bool init() {
 					printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
 					success = false;
 				}
+
+                 //Initialize SDL_mixer
+                if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+                {
+                    printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+                    success = false;
+                }
 			}
 		}
 	}
@@ -138,6 +149,28 @@ bool loadMedia () {
 		success = false;
 	}
 
+    //Load sound effects
+    gJump = Mix_LoadWAV( "media/sound/jump.wav" );
+    if( gJump == NULL )
+    {
+        printf( "Failed to load jump sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+
+    gCoin = Mix_LoadWAV( "media/sound/coin.wav" );
+    if( gCoin == NULL )
+    {
+        printf( "Failed to load Coin sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+
+    gBlockhit = Mix_LoadWAV( "media/sound/blockhit.wav" );
+    if( gBlockhit == NULL )
+    {
+        printf( "Failed to load blockhit sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+
     return success;
 
 }
@@ -156,6 +189,14 @@ void close () {
 	rightHand.free();
 	leftHand.free();
 
+    //Free the sound effects
+    Mix_FreeChunk( gJump );
+    Mix_FreeChunk( gCoin );
+    Mix_FreeChunk( gBlockhit );
+	gJump = NULL;
+	gCoin = NULL;
+	gBlockhit = NULL;
+
 	//Free global font
     TTF_CloseFont( gFont );
     gFont = NULL;
@@ -171,6 +212,7 @@ void close () {
 	IMG_Quit();
 	SDL_Quit();
 	TTF_Quit();
+	Mix_Quit();
 
 }
 
@@ -222,8 +264,6 @@ int main( int argc, char* args[] ) {
 	// the time of game
 	Timer gameTimer;
 
-	gameTimer.start();
-
 	// count true pressing
 	int typed = 0;
 
@@ -238,7 +278,7 @@ int main( int argc, char* args[] ) {
 
 	double velCam = 0;
 
-	int wpm = 0;
+	double wpm = 0;
 
 	// the area camera
 	SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
@@ -247,6 +287,10 @@ int main( int argc, char* args[] ) {
     while (!quit) {
 
 		capTimer.start();
+
+		if (gameTimer.isStarted() == false) {
+			gameTimer.start();
+		}
 
         while( SDL_PollEvent( &e ) != 0 ) {
             //User requests quit
@@ -259,10 +303,14 @@ int main( int argc, char* args[] ) {
 					typed++;
 					if (mainChar.getThreat() == 1) {
 						gMario.setStatus(2);
+						Mix_PlayChannel(-1, gJump, 0);
+					} else {
+						Mix_PlayChannel(-1, gCoin, 0);
 					}
 				} 
 				else {
 					error++;
+					Mix_PlayChannel(-1, gBlockhit, 0);
 				}
 
 			}
@@ -294,27 +342,27 @@ int main( int argc, char* args[] ) {
 		}
 
 		if (!temp.loadFromRenderedText(gRenderer, gameFont, "Hello, World!", textColor)) {
-			printf("Unable to render temp texture!\n");
+			printf("Unable to render temp texture!\n", TTF_GetError());
 			return -1;
 		}	
 
 		if (!errorTexture.loadFromRenderedText(gRenderer, gameFont, "Error: " + to_string(error), textColor)) {
-			printf("Unable to render error texture!\n");
+			printf("Unable to render error texture!\n", TTF_GetError());
 			return -1;
 		}
 
 		if (!typedTexture.loadFromRenderedText(gRenderer, gameFont, "Typed: " + to_string(typed), textColor)) {
-			printf("Unable to render typed texture!\n");
+			printf("Unable to render typed texture!\n", TTF_GetError());
 			return -1;
 		}
 
-		if (!wordPerMinute.loadFromRenderedText(gRenderer, gameFont, "WPM: " + to_string(wpm), textColor)) {
-			printf("Unable to render wpm texture!\n");
-			return -1;
-		}
+		// if (!wordPerMinute.loadFromRenderedText(gRenderer, gameFont, "WPM: " + to_string(wpm), textColor)) {
+		// 	printf("Unable to render wpm texture!\n");
+		// 	return -1;
+		// }
 
 		if (!gameTimeTexture.loadFromRenderedText(gRenderer, gameFont, gameTimer.convert(), textColor)) {
-			printf("Unable to render game time texture!\n");
+			printf("Unable to render game time texture!\n", TTF_GetError());
 			return -1;
 		}
 
@@ -324,7 +372,7 @@ int main( int argc, char* args[] ) {
 				for (int i = 0; i < 3; i++) {
 					string s(1, arrChar[i].getChar());
 					if (!arrChar[i].loadFromRenderedText(gRenderer, gFont, s, textColor)) {
-						printf( "Unable to render character texture!\n" );
+						printf( "Unable to render character texture!\n", TTF_GetError() );
 						return -1;
 					}
 
@@ -335,7 +383,7 @@ int main( int argc, char* args[] ) {
 				for (int i = 0; i < 2; i++) {
 					string s(1, arrChar[i].getChar());
 					if (!arrChar[i].loadFromRenderedText(gRenderer, gFont, s, textColor)) {
-						printf( "Unable to render character texture!\n" );
+						printf( "Unable to render character texture!\n", TTF_GetError() );
 						return -1;
 					}
 
@@ -346,7 +394,7 @@ int main( int argc, char* args[] ) {
 				for (int i = 0; i < 1; i++) {
 					string s(1, arrChar[i].getChar());
 					if (!arrChar[i].loadFromRenderedText(gRenderer, gFont, s, textColor)) {
-						printf( "Unable to render character texture!\n" );
+						printf( "Unable to render character texture!\n", TTF_GetError() );
 						return -1;
 					}
 
@@ -360,7 +408,7 @@ int main( int argc, char* args[] ) {
 				for (int i = 0; i < 4; i++) {
 					string s(1, arrChar[i].getChar());
 					if (!arrChar[i].loadFromRenderedText(gRenderer, gFont, s, textColor)) {
-						printf( "Unable to render character texture!\n" );
+						printf( "Unable to render character texture!\n", TTF_GetError() );
 						return -1;
 					}
 
@@ -370,33 +418,6 @@ int main( int argc, char* args[] ) {
 		
 
 		mainChar = arrChar[0];
-
-		// if (gMario.getXPos() - camera.x > 96 && (camera.x + SCREEN_WIDTH) < (MAX_THREAT + 1) * 240) {
-		// 	camera.x += 10;
-		// }
-
-		// if ((camera.x + SCREEN_WIDTH) < (MAX_THREAT + 1) * 240) {
-		// 	if (gMario.getXPos() - camera.x <= 96) {
-		// 		velCam = 0;
-		// 	}
-		// 	else if (gMario.getXPos() - camera.x > 96 && gMario.getXPos() - camera.x <= (24 * 5)) {
-		// 		velCam = 1;
-		// 	} 
-		// 	else if (gMario.getXPos() - camera.x > (24 * 5) && gMario.getXPos() - camera.x <= (24 * 9)) {
-		// 		velCam = 2;
-		// 	} 
-		// 	else if (gMario.getXPos() - camera.x > (24 * 9) && gMario.getXPos() - camera.x <= (24 * 13)) {
-		// 		velCam = 4;
-		// 	} 
-		// 	else if (gMario.getXPos() -camera.x > (24 * 13)) {
-		// 		velCam = 10;
-		// 	} 
-
-		// } else {
-		// 	velCam = 0;
-		// }
-
-		
 
 		if ((camera.x + SCREEN_WIDTH) < (MAX_THREAT + 1) * 240) {
 			camera.x += velCam;
@@ -466,6 +487,7 @@ int main( int argc, char* args[] ) {
 				break;
 			case MAX_THREAT:
 				endGame = true;
+				gameTimer.pause();
 				break;
 			
 			default:
@@ -498,16 +520,6 @@ int main( int argc, char* args[] ) {
 
 		// render main character
 		mainChar.render(562, 562, gRenderer);
-
-		// if (gMario.getXPos() < stop - 70) {
-		// 	gMario.run(gRenderer, camera.x);
-		// } 
-		// // else if (gMario.getXPos() == stop - 70 && mainChar.getThreat() == 1) {
-		// // 	gMario.jump(gRenderer);
-		// // }
-		// else if (gMario.getXPos() >= stop - 70) {
-		// 	gMario.stand(gRenderer, camera.x);
-		// }
 
 		if (gMario.getXPos() < stop - 70 && gMario.getStatus() != 2) {
 			gMario.setStatus(1);

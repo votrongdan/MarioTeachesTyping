@@ -4,7 +4,7 @@
 #include "CommonFunc.h"
 #include "BaseObj.h"
 
-#define BASE_VEL 10
+#define BASE_VEL 9
 
 class Mario : public BaseObj {
 
