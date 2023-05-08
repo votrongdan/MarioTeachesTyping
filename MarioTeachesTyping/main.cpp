@@ -334,7 +334,7 @@ int main( int argc, char* args[] ) {
 		}
 
 		// calculate wpm
-		wpm = 0;
+		wpm = ((double) typed / 5) /  ((double) gameTimer.getTicks() / 60000);
 
 		// add character
 		while (arrChar.size() < 4 && count < MAX_THREAT) {
@@ -363,10 +363,10 @@ int main( int argc, char* args[] ) {
 			return -1;
 		}
 
-		// if (!wordPerMinute.loadFromRenderedText(gRenderer, gameFont, "WPM: " + to_string(wpm), textColor)) {
-		// 	printf("Unable to render wpm texture!\n");
-		// 	return -1;
-		// }
+		if (!wordPerMinute.loadFromRenderedText(gRenderer, gameFont, "WPM: " + to_string((int) wpm), textColor)) {
+			printf("Unable to render wpm texture!\n");
+			return -1;
+		}
 
 		if (!gameTimeTexture.loadFromRenderedText(gRenderer, gameFont, gameTimer.convert(), textColor)) {
 			printf("Unable to render game time texture!\n", TTF_GetError());
@@ -550,6 +550,8 @@ int main( int argc, char* args[] ) {
 
 			errorTexture.render(950, 640, gRenderer);
 
+			wordPerMinute.render(950, 560, gRenderer);
+
 			rightHand.renderRightHand(gRenderer, mainChar.getChar());
 			leftHand.renderLeftHand(gRenderer, mainChar.getChar());
 
@@ -557,14 +559,18 @@ int main( int argc, char* args[] ) {
 
 		}
 		else {
+
+			gameTimeTexture.loadFromRenderedText(gRenderer, gameFont, "Time: " + gameTimer.convert(), textColor);
 			
 			endGameTexture.render(334, 175, gRenderer);
 
-			gameTimeTexture.render(555, 240, gRenderer);
+			gameTimeTexture.render(555, 229, gRenderer);
 
-			typedTexture.render(555, 309, gRenderer);
+			typedTexture.render(555, 288, gRenderer);
 
-			errorTexture.render(555, 378, gRenderer);
+			errorTexture.render(555, 347, gRenderer);
+
+			wordPerMinute.render(555, 404, gRenderer);
 
 		}
 
