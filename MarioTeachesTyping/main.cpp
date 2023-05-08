@@ -16,6 +16,8 @@ BaseObj errorTexture;
 
 BaseObj wordPerMinute;
 
+BaseObj endGameTexture;
+
 BaseObj temp;
 
 Road road;
@@ -111,6 +113,11 @@ bool loadMedia () {
 	gameFont = TTF_OpenFont( "media/font/roboto.ttf", 32 );
 	if( gameFont == NULL ) {
 		printf( "Failed to load roboto font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = false;
+	}
+
+    if ( !endGameTexture.loadMedia(gRenderer, "media/image/endGame.png" ) ) {
+		printf( "Failed to load end game' texture image!\n" );
 		success = false;
 	}
 
@@ -507,16 +514,6 @@ int main( int argc, char* args[] ) {
 				}
 				break;
 		}
-		gameTimeTexture.render(40, 560, gRenderer);
-
-		typedTexture.render(40, 640, gRenderer);
-
-		errorTexture.render(950, 640, gRenderer);
-
-		wordPerMinute.render(950, 560, gRenderer);
-
-		rightHand.renderRightHand(gRenderer, mainChar.getChar());
-		leftHand.renderLeftHand(gRenderer, mainChar.getChar());
 
 		// render main character
 		mainChar.render(562, 562, gRenderer);
@@ -545,9 +542,31 @@ int main( int argc, char* args[] ) {
 			velCam = 0;
 		}
 
-		// cout << velCam << " ";
+		if (endGame == false) {
 
-		gMario.run(gRenderer, camera.x, stop);
+			gameTimeTexture.render(40, 560, gRenderer);
+
+			typedTexture.render(40, 640, gRenderer);
+
+			errorTexture.render(950, 640, gRenderer);
+
+			rightHand.renderRightHand(gRenderer, mainChar.getChar());
+			leftHand.renderLeftHand(gRenderer, mainChar.getChar());
+
+			gMario.run(gRenderer, camera.x, stop);
+
+		}
+		else {
+			
+			endGameTexture.render(334, 175, gRenderer);
+
+			gameTimeTexture.render(555, 240, gRenderer);
+
+			typedTexture.render(555, 309, gRenderer);
+
+			errorTexture.render(555, 378, gRenderer);
+
+		}
 
         // update screen
         SDL_RenderPresent( gRenderer );
