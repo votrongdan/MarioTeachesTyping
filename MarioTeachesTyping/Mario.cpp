@@ -9,7 +9,7 @@ Mario::Mario() {
     
     runFrame = 0;
     jumpFrame = 0;
-    standFrame = 0;
+    standFrame = 1;
 
     vel = BASE_VEL;
 
@@ -44,6 +44,46 @@ bool Mario::loadMario(SDL_Renderer* renderer, string path) {
         standClips[0].y = 4;
         standClips[0].w = 65;
         standClips[0].h = 109;
+
+        standClips[1].x = 74;
+        standClips[1].y = 4;
+        standClips[1].w = 65;
+        standClips[1].h = 109;
+
+        standClips[2].x = 144;
+        standClips[2].y = 4;
+        standClips[2].w = 65;
+        standClips[2].h = 109;
+
+        standClips[3].x = 214;
+        standClips[3].y = 4;
+        standClips[3].w = 62;
+        standClips[3].h = 109;
+
+        standClips[4].x = 282;
+        standClips[4].y = 4;
+        standClips[4].w = 59;
+        standClips[4].h = 109;
+
+        standClips[5].x = 346;
+        standClips[5].y = 4;
+        standClips[5].w = 57;
+        standClips[5].h = 109;
+
+        standClips[6].x = 409;
+        standClips[6].y = 4;
+        standClips[6].w = 57;
+        standClips[6].h = 109;
+
+        standClips[7].x = 471;
+        standClips[7].y = 4;
+        standClips[7].w = 54;
+        standClips[7].h = 109;
+
+        standClips[8].x = 531;
+        standClips[8].y = 4;
+        standClips[8].w = 54;
+        standClips[8].h = 109;
 
         runClips[0].x = 4;
         runClips[0].y = 118;
@@ -153,42 +193,9 @@ int Mario::getStatus() {
 
 }
 
-void Mario::jump(SDL_Renderer* renderer) {
-
-    SDL_Rect currentClip;
-
-    //currentClip = jumpClips[frame / 25];
-
-    BaseObj::render(xPos, yPos - currentClip.h, renderer, &currentClip);
-
-    if (jumpFrame < 125) {
-        yPos -= 1;
-    } else if (jumpFrame > 150) {
-        yPos += 1;
-    }
-
-    jumpFrame++;
-
-    if (jumpFrame == 275) {
-        status == 0;
-        return;
-    }
-
-}
-
 void Mario::run(SDL_Renderer* renderer, int camX, int stop) {
 
     SDL_Rect currentClip = {0, 0, 0, 0};
-
-    // currentClip = runClips[frame / 5];
-
-    // BaseObj::render(xPos - camX, yPos - currentClip.h, renderer, &currentClip);
-    
-    // xPos += 10;
-
-    // frame++;
-
-    // if (frame == 30) frame = 0;
 
     if (xPos < stop - 70) {
         vel += 0.01;
@@ -205,7 +212,7 @@ void Mario::run(SDL_Renderer* renderer, int camX, int stop) {
     if (status == 1) {
 
         jumpFrame = 0;
-        standFrame = 0;
+        standFrame = 2;
 
         currentClip = runClips[runFrame / 10];
 
@@ -216,9 +223,10 @@ void Mario::run(SDL_Renderer* renderer, int camX, int stop) {
         runFrame++;
 
         if (runFrame == 50) runFrame = 0;
-    } else if (status == 2) {
+    } 
+    else if (status == 2) {
         runFrame = 0;
-        standFrame = 0;
+        standFrame = 2;
 
         currentClip = jumpClips[jumpFrame / 2];
 
@@ -239,36 +247,18 @@ void Mario::run(SDL_Renderer* renderer, int camX, int stop) {
             status = 1;
         }
 
-    } else if (status == 0) {
+    } 
+    else if (status == 0) {
         runFrame = 0;
         jumpFrame = 0;
 
-
-
-        currentClip = standClips[0];
+        currentClip = standClips[2];
 
         BaseObj::render(xPos - camX, yPos - currentClip.h, renderer, &currentClip);
-
         
     }
 }
 
-void Mario::stand(SDL_Renderer* renderer, int camX) {
-
-    SDL_Rect currentClip;
-
-    currentClip = standClips[0];
-
-    BaseObj::render(xPos - camX, yPos - currentClip.h, renderer, &currentClip);
-
-}
 
 
-// void Mario::renderMario(SDL_Renderer* renderer) {
 
-//     // SDL_Rect currentClip = runClips[1];
-
-//     // BaseObj::render(xPos, yPos, renderer, &currentClip);
-//     run(renderer);
-
-// }

@@ -17,12 +17,6 @@ BaseObj::~BaseObj () {
 
 }
 
-// SDL_Texture* getObj() {
-
-// 	return this -> obj;
-
-// }
-
 bool BaseObj::loadMedia(SDL_Renderer* renderer, string path ) {
 
 	//Get rid of preexisting texture

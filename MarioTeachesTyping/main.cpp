@@ -37,6 +37,8 @@ Mix_Chunk *gCoin = NULL;
 
 Button exitButton;
 Button playButton;
+Button nextButton;
+Button menuButton;
 
 enum {
 	PLAY = 1,
@@ -169,6 +171,16 @@ bool loadMedia () {
 
 	if (!playButton.loadButton(gRenderer, "media/image/playButton.png")) {
 		printf( "Failed to load play button texture image!\n " );
+		success = false;
+	}
+
+	if (!nextButton.loadButton(gRenderer, "media/image/nextButton.png")) {
+		printf( "Failed to load next button texture image!\n " );
+		success = false;
+	}
+
+	if (!menuButton.loadButton(gRenderer, "media/image/menuButton.png")) {
+		printf( "Failed to load menu button texture image!\n " );
 		success = false;
 	}
 
@@ -350,27 +362,10 @@ int main( int argc, char* args[] ) {
 						Mix_PlayChannel(-1, gBlockhit, 0);
 					}
 				}
-			// else if (e.type == SDL_KEYDOWN) {
-
-			// 	if (e.key.keysym.sym == mainChar.getChar()) {
-			// 		mainChar.setDead(true);
-			// 		typed++;
-			// 		if (mainChar.getThreat() == 1) {
-			// 			gMario.setStatus(2);
-			// 			Mix_PlayChannel(-1, gJump, 0);
-			// 		} else {
-			// 			Mix_PlayChannel(-1, gCoin, 0);
-			// 		}
-			// 	} 
-			// 	else {
-			// 		error++;
-			// 		Mix_PlayChannel(-1, gBlockhit, 0);
-			// 	}
-
-			// 	exitButton.handleEvent(&e);
-
-			// 	playButton.handleEvent(&e);
-
+			}
+			if (game == END) {
+				nextButton.handleEvent(&e);
+				menuButton.handleEvent(&e);
 			}
 
         } 
@@ -381,6 +376,17 @@ int main( int argc, char* args[] ) {
 		else if (playButton.isUp()) {
 			game = PLAY;
 		} 
+		else if (nextButton.isUp()) {
+			game = PLAY;
+			gameTimer.stop();
+			gameTimer.start();
+			cout << 1;
+			count = 0;
+			error = 0;
+		} 
+		else if (menuButton.isUp()) {
+			game = MENU;
+		}
 
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear( gRenderer );
@@ -627,6 +633,9 @@ int main( int argc, char* args[] ) {
 			// render background
 			gBackground.render(0, 0, gRenderer);
 
+			// render road
+			road.renderRoad(gRenderer, xRoad - camera.x);
+
 			gameTimeTexture.loadFromRenderedText(gRenderer, gameFont, "Time: " + gameTimer.convert(), textColor);
 			
 			endGameTexture.render(334, 175, gRenderer);
@@ -638,6 +647,12 @@ int main( int argc, char* args[] ) {
 			errorTexture.render(555, 347, gRenderer);
 
 			wordPerMinute.render(555, 404, gRenderer);
+
+			nextButton.setPosition(375, 466);
+			nextButton.renderButton(gRenderer);
+
+			menuButton.setPosition(608, 466);
+			menuButton.renderButton(gRenderer);
 
 		}
 		
