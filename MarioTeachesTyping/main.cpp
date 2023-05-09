@@ -31,6 +31,8 @@ Tile gTile;
 
 Character c;
 
+Mix_Music *gMusic = NULL;
+
 Mix_Chunk *gJump = NULL;
 Mix_Chunk *gBlockhit = NULL;
 Mix_Chunk *gCoin = NULL;
@@ -189,24 +191,27 @@ bool loadMedia () {
 		success = false;
 	}
 
+	gMusic = Mix_LoadMUS( "media/sound/overWorld.wav" );
+	if ( gMusic == NULL ) {
+		printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
+		success = false;
+	}
+
     //Load sound effects
     gJump = Mix_LoadWAV( "media/sound/jump.wav" );
-    if( gJump == NULL )
-    {
+    if ( gJump == NULL ) {
         printf( "Failed to load jump sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
 
     gCoin = Mix_LoadWAV( "media/sound/coin.wav" );
-    if( gCoin == NULL )
-    {
+    if ( gCoin == NULL ) {
         printf( "Failed to load Coin sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
 
     gBlockhit = Mix_LoadWAV( "media/sound/blockhit.wav" );
-    if( gBlockhit == NULL )
-    {
+    if ( gBlockhit == NULL ) {
         printf( "Failed to load blockhit sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
@@ -234,12 +239,16 @@ void close () {
 	endGameTexture.free();
 
     //Free the sound effects
-    Mix_FreeChunk( gJump );
-    Mix_FreeChunk( gCoin );
-    Mix_FreeChunk( gBlockhit );
+    Mix_FreeChunk(gJump);
+    Mix_FreeChunk(gCoin);
+    Mix_FreeChunk(gBlockhit);
 	gJump = NULL;
 	gCoin = NULL;
 	gBlockhit = NULL;
+
+	//Free the music
+	Mix_FreeMusic(gMusic);
+	gMusic = NULL;
 
 	//Free global font
     TTF_CloseFont( gFont );
@@ -375,6 +384,7 @@ int main( int argc, char* args[] ) {
 		}
 		else if (playButton.isUp()) {
 			game = PLAY;
+			Mix_HaltMusic();
 		} 
 		else if (nextButton.isUp()) {
 			game = PLAY;
@@ -625,6 +635,10 @@ int main( int argc, char* args[] ) {
 			
 			playButton.renderButton(gRenderer);
 			exitButton.renderButton(gRenderer);
+
+			if (Mix_PlayingMusic() == 0) {
+				Mix_PlayMusic(gMusic, -1);
+			}
 
 		} 
 
