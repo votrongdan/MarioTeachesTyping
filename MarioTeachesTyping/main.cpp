@@ -136,7 +136,7 @@ bool loadMedia () {
 		success = false;
 	}
 
-    if ( !road.loadGrass(gRenderer, "media/image/grass.png" ) ) {
+    if ( !road.loadGrass(gRenderer, "media/image/road.png" ) ) {
 		printf( "Failed to load grass' texture image!\n" );
 		success = false;
 	}
