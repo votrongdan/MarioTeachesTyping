@@ -34,6 +34,6 @@ static TTF_Font* gameFont = NULL;
 // the y coordinate of sky line 
 #define SKY_LINE 480
 
-#define MAX_THREAT 250
+#define MAX_THREAT 100
 
 #endif
