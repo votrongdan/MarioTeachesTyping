@@ -1,7 +1,7 @@
 # MarioTeachesTyping
-Ho va ten: Vo Trong Dan
-MSV: 22025522
-QH-2022-I/CQ-N-CLC
+- Ho va ten: Vo Trong Dan
+- MSV: 22025522
+- QH-2022-I/CQ-N-CLC
 
 # Link demo youtube: https://youtu.be/0l4iKoWpXSo
 
